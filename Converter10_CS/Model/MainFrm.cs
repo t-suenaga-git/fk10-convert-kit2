@@ -11333,17 +11333,27 @@ namespace Converter10.Njc.Frm
             tmp_sql = tmp_sql + " AND   [部屋No] = '" + sosakihyno + "'";
             tmp_sql = tmp_sql + " AND   [送金ルール管理No] = '" + sosakiknno + "'";
             SafeDictionary<string, object> hashtbl = [];
-            DBExec.Exec_DataReader(tmp_sql, ref sqlcnnv10, ref hashtbl);
-            string soknkei = hashtbl["管理形態"].ToString();
-            int.TryParse(hashtbl["仲介物件 - 新規契約業務"].ToString(), out int chukaiShinki);
-            int.TryParse(hashtbl["仲介物件 - 契約更新業務"].ToString(), out int chukaiKoshin);
-            int.TryParse(hashtbl["仲介物件 - 解約業務"].ToString(), out int chukaiKaiyaku);
+            // 20260914 pre_物件管理情報(送金ルール基本情報)に該当レコードが存在しない場合に
+            // hashtbl が空のままとなり、直後の .ToString() で異常終了していたのを修正
+            bool soruleKihonExists = DBExec.Exec_DataReader(tmp_sql, ref sqlcnnv10, ref hashtbl);
+            string soknkei = "";
+            int chukaiShinki = 0;
+            int chukaiKoshin = 0;
+            int chukaiKaiyaku = 0;
+            if (soruleKihonExists)
+            {
+                soknkei = hashtbl["管理形態"]?.ToString() ?? "";
+                int.TryParse(hashtbl["仲介物件 - 新規契約業務"]?.ToString(), out chukaiShinki);
+                int.TryParse(hashtbl["仲介物件 - 契約更新業務"]?.ToString(), out chukaiKoshin);
+                int.TryParse(hashtbl["仲介物件 - 解約業務"]?.ToString(), out chukaiKaiyaku);
+            }
 
             // 管理形態による送金先No、送金先口座Noの必須チェック
             string log_key = "";
             string log_value = CommonModule.LOG_NAIYO_ERR_NOTEXISTDATA_REQUIRED + "-" + CommonModule.LOG_HUBI_NOTEXISTDATA_REQUIRED + "-" + CommonModule.LOG_TAISYO_NOTEXISTDATA_REQUIRED;
 
-            if ((soknkei == "3" && chukaiShinki == 0 && chukaiKoshin == 0 && chukaiKaiyaku == 0) | soknkei == "4" | soknkei == "5")
+            // 対応する送金ルール基本情報が存在しない場合も、必須チェック対象外として扱う
+            if ((soknkei == "3" && chukaiShinki == 0 && chukaiKoshin == 0 && chukaiKaiyaku == 0) | soknkei == "4" | soknkei == "5" | !soruleKihonExists)
             {
             }
             // 自社物件、送金保留の物件は必須ではないためチェック処理を行わない
