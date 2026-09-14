@@ -2549,7 +2549,7 @@ namespace Converter10.Njc.Frm
             this.lblHFirstLabel.Name = "lblHFirstLabel";
             this.lblHFirstLabel.Size = new System.Drawing.Size(820, 80);
             this.lblHFirstLabel.TabIndex = 149;
-            this.lblHFirstLabel.Text = "「中間ファイル」から「賃貸革命10」のコンバート作業を行います。";
+            this.lblHFirstLabel.Text = "「中間テーブル」から「賃貸革命10」のコンバート作業を行います。";
             this.lblHFirstLabel.UseCompatibleTextRendering = true;
             // 
             // grpHFirstNaiyo
@@ -3804,7 +3804,7 @@ namespace Converter10.Njc.Frm
             this.lblHDatacvHajimeniLabel.Name = "lblHDatacvHajimeniLabel";
             this.lblHDatacvHajimeniLabel.Size = new System.Drawing.Size(587, 80);
             this.lblHDatacvHajimeniLabel.TabIndex = 139;
-            this.lblHDatacvHajimeniLabel.Text = "「中間ファイル」から「賃貸革命10」へデータコンバートを行います。";
+            this.lblHDatacvHajimeniLabel.Text = "「中間テーブル」から「賃貸革命10」へデータコンバートを行います。";
             this.lblHDatacvHajimeniLabel.UseCompatibleTextRendering = true;
             // 
             // btnDoui
@@ -10055,7 +10055,7 @@ namespace Converter10.Njc.Frm
             this.lblTitleH.Name = "lblTitleH";
             this.lblTitleH.Size = new System.Drawing.Size(250, 26);
             this.lblTitleH.TabIndex = 140;
-            this.lblTitleH.Text = "[中間ファイル → 賃貸革命10]";
+            this.lblTitleH.Text = "[中間テーブル → 賃貸革命10]";
             this.lblTitleH.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pgbCheck
