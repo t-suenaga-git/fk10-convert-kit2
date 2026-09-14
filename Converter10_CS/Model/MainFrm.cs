@@ -903,6 +903,16 @@ namespace Converter10.Njc.Frm
                                         }
                                         // 20161205 初回契約日を契約日から取得するように修正 -add end
 
+                                        // 20260914 pre_物件情報.kozo_other(その他建物構造)に値がある場合、
+                                        // 建物構造(基本)-構造 は「その他」固定(コード99、CVDBInfoModule定義と同じ)とする
+                                        if ((cvitem ?? "") == "物件情報" + CommonModule.STR_SPLIT_1 + "物件詳細情報")
+                                        {
+                                            if (!string.IsNullOrEmpty(tmp_hash["その他建物構造"]))
+                                            {
+                                                tmp_hash["建物構造(基本)-構造"] = "99";
+                                            }
+                                        }
+
                                         foreach (var item in tmp_hash)
                                         {
                                             string tmp_taisyo = Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject("[", item.Key), "]"));
@@ -6996,6 +7006,10 @@ namespace Converter10.Njc.Frm
 
             if (frmcloseflg)
             {
+                // 20260914 「終了」ボタン直接押下時、ここでのClose()呼び出しが
+                // MainFrm_FormClosing側のガードなしでFormClosingを発火させ、
+                // ×ボタン経由と誤認識されて終了確認ダイアログが再度表示されていたのを修正
+                closingViaBtnEnd = true;
                 Close();
             }
 
