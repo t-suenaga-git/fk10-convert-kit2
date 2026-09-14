@@ -8,10 +8,10 @@ using System.Runtime.InteropServices;
 
 // アセンブリ属性の値を確認します。
 
-[assembly: AssemblyTitle("Converter10")]
+[assembly: AssemblyTitle("Converter10v2")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Converter10")]
+[assembly: AssemblyProduct("Converter10v2")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 
