@@ -5,8 +5,6 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converter10_CS", "Converter10_CS\Converter10_CS.csproj", "{6551FDF9-9414-0EC3-1E49-A5F56C58D661}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Converter10_VB", "Converter10_VB\Converter10_VB.vbproj", "{D7757C92-584C-4132-9C11-6F8B0ECFE2C1}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "その他", "その他", "{B8FB2867-301B-4FCF-AFB5-D277A89E32BF}"
 	ProjectSection(SolutionItems) = preProject
 		その他\accessdatabaseengine.exe = その他\accessdatabaseengine.exe
@@ -23,10 +21,6 @@ Global
 		{6551FDF9-9414-0EC3-1E49-A5F56C58D661}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6551FDF9-9414-0EC3-1E49-A5F56C58D661}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6551FDF9-9414-0EC3-1E49-A5F56C58D661}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7757C92-584C-4132-9C11-6F8B0ECFE2C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7757C92-584C-4132-9C11-6F8B0ECFE2C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7757C92-584C-4132-9C11-6F8B0ECFE2C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7757C92-584C-4132-9C11-6F8B0ECFE2C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
