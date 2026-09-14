@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <StartupObject>Converter10.My.MyApplication</StartupObject>
     <RootNamespace>Converter10</RootNamespace>
-    <AssemblyName>Converter10</AssemblyName>
+    <AssemblyName>Converter10v2</AssemblyName>
     <MyType>WindowsForms</MyType>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(ProjectDir)**\*.vb</DefaultItemExcludes>
     <LangVersion>latest</LangVersion>

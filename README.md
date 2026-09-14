@@ -1,4 +1,4 @@
-# fk10-convert-kit
+# fk10-convert-kit2
 
 
 
@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://git.njc-web.info/root/fk10-convert-kit.git
+git remote add origin https://git.njc-web.info/root/fk10-convert-kit2.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://git.njc-web.info/root/fk10-convert-kit/-/settings/integrations)
+- [ ] [Set up project integrations](https://git.njc-web.info/root/fk10-convert-kit2/-/settings/integrations)
 
 ## Collaborate with your team
 
