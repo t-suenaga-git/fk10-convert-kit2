@@ -51,8 +51,6 @@ namespace Converter10.EntityFramework.Entity
 
         public string kozo_nokbn { get; set; }
 
-        public string kozo_other { get; set; }
-
         public string moto_gy_fudono { get; set; }
 
         public string biko_kihon { get; set; }

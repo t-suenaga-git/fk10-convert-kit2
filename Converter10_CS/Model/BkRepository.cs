@@ -1542,6 +1542,18 @@ namespace Converter10.Njc.Repository
                         // キーをguidへ変換
                         hash_cvitem["bk_guid"] = hash_guid[hash_cvitem["bk_guid"]];
 
+                        // 20260914 紐付マスタ(構造マスタ)での解決後、建物構造(基本)-構造(kozo_nokbn)が
+                        // 「その他」(コード99)になった場合、その他建物構造には紐付け前の元の値
+                        // (pre_物件情報.kozo_nokbnの生値)をそのまま設定する。それ以外はクリアする
+                        if (hash_cvitem["kozo_nokbn"] == "99")
+                        {
+                            hash_cvitem["kozo_other"] = model_cvitem.Vari_Kozo_nokbn;
+                        }
+                        else
+                        {
+                            hash_cvitem["kozo_other"] = "";
+                        }
+
                         // 挿入処理
                         CVDBInsert.Cnv_Db(sqlcnnv10, tblname, fldnamegrp, hash_cvitem, ref normalflg);
 

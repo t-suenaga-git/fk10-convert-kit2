@@ -1351,7 +1351,7 @@ namespace Converter10.Njc.Frm
               new (){ 汎用中間ファイル = new TableAndColumn("物件情報", "法令-造成宅地防災区域備考"), Preテーブル  = new TableAndColumn(nameof(pre_物件情報), null), 既存中間ファイル = new TableAndColumn("物件詳細情報", "法令-造成宅地防災区域備考") },
               new (){ 汎用中間ファイル = new TableAndColumn("物件情報", "法令-津波災害警戒区域備考"), Preテーブル  = new TableAndColumn(nameof(pre_物件情報), null), 既存中間ファイル = new TableAndColumn("物件詳細情報", "法令-津波災害警戒区域備考") },
               new (){ 汎用中間ファイル = new TableAndColumn("物件情報", "管理形態-管理人名"), Preテーブル  = new TableAndColumn(nameof(pre_物件情報), nameof(pre_物件情報.kanrinin_name)), 既存中間ファイル = new TableAndColumn("物件詳細情報", "管理形態-管理人名") },
-              new (){ 汎用中間ファイル = new TableAndColumn("物件情報", "その他建物構造"), Preテーブル  = new TableAndColumn(nameof(pre_物件情報), nameof(pre_物件情報.kozo_other)), 既存中間ファイル = new TableAndColumn("物件詳細情報", "その他建物構造") },
+              new (){ 汎用中間ファイル = new TableAndColumn("物件情報", "その他建物構造"), Preテーブル  = new TableAndColumn(nameof(pre_物件情報), null), 既存中間ファイル = new TableAndColumn("物件詳細情報", "その他建物構造") },
               new (){ 汎用中間ファイル = new TableAndColumn("物件情報", "角地フラグ"), Preテーブル  = new TableAndColumn(nameof(pre_物件情報), null), 既存中間ファイル = new TableAndColumn("物件詳細情報", "角地フラグ") },
               new (){ 汎用中間ファイル = new TableAndColumn("物件情報", "都市計画"), Preテーブル  = new TableAndColumn(nameof(pre_物件情報), null), 既存中間ファイル = new TableAndColumn("物件詳細情報", "都市計画") },
               new (){ 汎用中間ファイル = new TableAndColumn("物件情報", "用途地域"), Preテーブル  = new TableAndColumn(nameof(pre_物件情報), null), 既存中間ファイル = new TableAndColumn("物件詳細情報", "用途地域") },
