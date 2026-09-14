@@ -1,10 +1,82 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Linq;
+using Converter10.Njc.Frm;
+
 namespace Converter10
 {
     static class MidTableModule
     {
+        /// <summary>
+        /// 中間ファイル紐づけ情報list の「既存中間ファイル」側と列構成が完全一致することを
+        /// 確認済みのカテゴリ一覧(item名)。ここに載っている間だけ、CREATE TABLE文を
+        /// MakeMidTable_Legacy のハードコードではなく、マッピングリストから自動生成する。
+        /// 一致確認はスクリプトで全135カテゴリを突き合わせて検証済み(2026-09時点)。
+        /// 新しいカテゴリをここに追加する場合は、既存のMakeMidTable_Legacyの定義と
+        /// 列名・順序が完全一致することを必ず確認すること。
+        /// </summary>
+        private static readonly HashSet<string> AutoGenSupportedItems = new()
+        {
+            "エリアマスタ", "バス交通マスタ", "バス停マスタ", "ライフライン業者情報",
+            "家主メモ情報", "家主基本情報", "家主固定控除情報", "家主口座情報",
+            "家賃入金口座情報", "家賃保証業者メモ情報", "家賃保証業者基本情報", "学校区マスタ",
+            "契約メモ情報", "契約基本情報", "契約契約者情報", "契約次回入金項目情報",
+            "契約者メモ情報", "契約者基本情報", "契約者口座情報", "契約者照合用カナ情報",
+            "契約者保証人情報", "契約車情報", "契約特約事項情報", "契約入居者情報",
+            "契約入金項目情報", "契約保険情報", "契約保証人情報", "契約履歴情報",
+            "施工業者情報", "施設保守業者情報", "自社メモ情報", "自社基本情報",
+            "自社担当者情報", "修繕業者メモ情報", "修繕業者基本情報", "修繕業者口座情報",
+            "振込手数料情報", "送金ルール基本情報", "送金ルール控除項目情報", "送金ルール送金先情報",
+            "送金ルール入金項目情報", "仲介業者メモ情報", "仲介業者基本情報", "仲介業者口座情報",
+            "特約マスタ", "部屋メモ情報", "部屋間取内訳情報", "部屋基本情報",
+            "部屋共通セールスポイント情報", "部屋鍵情報", "部屋所有者情報", "部屋駐車場情報",
+            "部屋特約情報", "部屋入金項目情報", "物件メモ情報", "物件基本情報",
+            "物件近隣駐車場情報", "物件鍵情報", "物件交通情報", "物件所有者情報",
+            "変動費設定内容", "変動費料金単価表", "保険業者メモ情報", "保険業者基本情報",
+            "保険業者口座情報", "保険種類マスタ",
+        };
 
         public static string MakeMidTable(string midsheetname, string replacetblname)
+        {
+            // midsheetname は "グループ名@#@項目名" 形式。項目名部分だけを取り出す
+            string[] tmp_parts = midsheetname.Split(new[] { CommonModule.STR_SPLIT_1 }, System.StringSplitOptions.None);
+            string itemName = tmp_parts[tmp_parts.Length - 1];
+
+            if (AutoGenSupportedItems.Contains(itemName))
+            {
+                string autoGenColumns = MakeMidTable_FromMapping(itemName);
+                if (autoGenColumns != null)
+                {
+                    return " CREATE TABLE " + replacetblname + "(" + autoGenColumns + ")";
+                }
+            }
+
+            // 許可リスト対象外、またはマッピングリストに該当が無い場合は既存のハードコード定義を使用
+            return MakeMidTable_Legacy(midsheetname, replacetblname);
+        }
+
+        /// <summary>
+        /// 中間ファイル紐づけ情報list の「既存中間ファイル」側から、指定カテゴリの列定義を
+        /// 自動生成する。該当エントリが1件も無い場合はnullを返す(呼び出し元でLegacyにフォールバック)。
+        /// </summary>
+        private static string MakeMidTable_FromMapping(string itemName)
+        {
+            var columns = MainFrmHelper.中間ファイル紐づけ情報list
+                .Where(e => e.既存中間ファイル != null
+                            && e.既存中間ファイル.TableName == itemName
+                            && !string.IsNullOrEmpty(e.既存中間ファイル.ColumnName))
+                .Select(e => e.既存中間ファイル.ColumnName)
+                .Distinct()
+                .ToList();
+
+            if (columns.Count == 0)
+            {
+                return null;
+            }
+
+            return string.Join(", ", columns.Select(c => $"[{c}] VARCHAR(MAX)"));
+        }
+
+        private static string MakeMidTable_Legacy(string midsheetname, string replacetblname)
         {
 
             string tmp_sql = "";

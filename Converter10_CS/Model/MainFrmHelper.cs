@@ -94,7 +94,8 @@ namespace Converter10.Njc.Frm
             return IsExists;
         }
 
-        private static readonly List<中間ファイル紐づけ情報> 中間ファイル紐づけ情報list = new()
+        // MidTableModule.MakeMidTable からもCVTBL_のスキーマ自動生成のために参照するため internal
+        internal static readonly List<中間ファイル紐づけ情報> 中間ファイル紐づけ情報list = new()
         {
               new (){ 汎用中間ファイル = new TableAndColumn("運用開始滞納金情報", "家主No"), Preテーブル  = new TableAndColumn(null, null), 既存中間ファイル = new TableAndColumn("家主基本情報", "家主No") },
               new (){ 汎用中間ファイル = new TableAndColumn("家主情報", "家主No"), Preテーブル  = new TableAndColumn(nameof(pre_家主情報), nameof(pre_家主情報.ow_no)), 既存中間ファイル = new TableAndColumn("家主イベント情報", "家主No") },
