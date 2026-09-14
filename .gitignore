@@ -363,3 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 
 その他/accessdatabaseengine.exe
+
+# 実際のDB接続文字列(パスワード含む)。ConnectionStrings.config.example を参考にローカルで作成する
+Converter10_CS/ConnectionStrings.config

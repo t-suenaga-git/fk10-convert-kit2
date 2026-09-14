@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<connectionStrings>
+  <add name="ApplicationDbContext" connectionString="data source=SERVER_NAME;initial catalog=DATABASE_NAME;persist security info=True;user id=USER_ID;password=PASSWORD;encrypt=False;trustservercertificate=True;MultipleActiveResultSets=True;App=EntityFramework" providerName="System.Data.SqlClient" />
+</connectionStrings>

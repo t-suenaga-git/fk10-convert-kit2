@@ -95,6 +95,14 @@
     <Content Include="icon_conv.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ConnectionStrings.config" Condition="Exists('ConnectionStrings.config')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="ConnectionStrings.config.example">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="EntityFramework.ja">
       <Version>6.2.0</Version>
     </PackageReference>
