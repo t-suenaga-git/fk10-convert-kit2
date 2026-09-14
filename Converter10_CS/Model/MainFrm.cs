@@ -100,6 +100,33 @@ namespace Converter10.Njc.Frm
         {
             dcv_exedir = Path.GetDirectoryName(dcv_exepath);
             InitializeComponent();
+            FormClosing += MainFrm_FormClosing;
+        }
+
+        // ×ボタン経由でCloseが呼ばれた場合に、アプリ固有の「終了」ボタン(btnEnd)と
+        // 同じ処理に委譲するためのガード。btnEnd_Click内からのClose()呼び出しは
+        // そのまま通す。
+        private bool closingViaBtnEnd = false;
+
+        private void MainFrm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (closingViaBtnEnd)
+            {
+                return;
+            }
+
+            // ×ボタン等、通常のクローズ操作は常にキャンセルし、
+            // btnEndボタンと同じ処理(状態に応じた確認ダイアログ等)に委譲する
+            e.Cancel = true;
+            closingViaBtnEnd = true;
+            try
+            {
+                btnEnd_Click(this, EventArgs.Empty);
+            }
+            finally
+            {
+                closingViaBtnEnd = false;
+            }
         }
 
         #endregion
@@ -5856,8 +5883,13 @@ namespace Converter10.Njc.Frm
             FormBorderStyle = FormBorderStyle.FixedSingle;
             // ----- 要修正 ----- end
 
-            // フォームコントロールボックス非可視設定
-            ControlBox = false;
+            // フォームコントロールボックス設定
+            // 20260914 アイコンを表示するためControlBoxは有効化し、最小化/最大化ボタンのみ非表示にする。
+            // 閉じるボタンはWinForms仕様上ControlBoxと不可分のため表示されるが、
+            // クリック時はMainFrm_FormClosingでbtnEndボタンと同じ処理に委譲している
+            ControlBox = true;
+            MinimizeBox = false;
+            MaximizeBox = false;
 
             // タブ隠し(TAB1)                                                  
             lblHidden1.Width = 950;
