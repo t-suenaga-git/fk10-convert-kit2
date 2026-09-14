@@ -14,7 +14,7 @@ namespace Converter10
         public const string CV_TO_NAME = "賃貸革命10";
         public const string CV_FROM_SYSTEM = "他社システム";
         public const string CV_KIZON_TITLE = "既存ユーザ用コンバーター";
-        public const string CV_HANYO_TITLE = "汎用コンバートキット";
+        public const string CV_HANYO_TITLE = "汎用コンバートキット2";
         public const string CV_TASYA_TITLE = "他社システム用コンバーター";
 
         public enum ConvertTypes                                    // コンバートタイプ
