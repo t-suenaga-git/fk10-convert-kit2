@@ -8837,9 +8837,33 @@ namespace Converter10.Njc.Common
             {
                 int rowsAffected = tmpsqlcom.ExecuteNonQuery();
             }
-            catch (Exception ex)                                               // kakaka INSERT失敗を重複と判断、呼び出し先にてnormalflgへセットして重複データのカウントを取っている？↓
+            catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
             {
-                flg = false;                                                     // kakaka 重複エラーではない場合も重複エラーとカウントされてる？
+                // 主キー/一意制約違反 = 想定内の重複データ。従来通りスキップ扱いにする
+                flg = false;
+            }
+            catch (Exception ex)
+            {
+                // 20260915 重複エラー以外(列名不一致等のスキーマ不整合等)を重複として握りつぶさないための修正。
+                // 従来はここで全ての例外を「重複」として扱っていたため、テーブルのスキーマが
+                // 想定と異なる(列が存在しない等)場合、全行がエラーとなり無言で0件になっていた。
+                // 処理自体は継続させつつ、コンバーターログファイルへ実際のエラー内容を出力する。
+                flg = false;
+                try
+                {
+                    int tmp_logcnt = 0;
+                    // ex.Message(SQLエラーメッセージ)は列名を単一引用符で囲んで含むことが多く(例: Invalid column name 'krbunrui_no'.)、
+                    // エスケープせずにログ用INSERT文へ埋め込むと文字列リテラルが途中で終端されSQL構文エラーになる。
+                    // その結果Get_LogTblInsertQry生成のINSERTがExec_NonQuery内で例外→握りつぶされ、ログ自体が書き込まれなくなっていた。
+                    string safe_exmessage = ex.Message.Replace("'", "’").Replace(",", "，");
+                    string tmp_logvalue = LogSetting.Set_LogValue(42, "DB書込", tblname, "異常終了(重複以外のエラー)", tblname, safe_exmessage, "-", "-", "-", tblname);
+                    string tmp_sql_log = LogSetting.Get_LogTblInsertQry(tmp_logvalue, false);
+                    DBExec.Exec_NonQuery(sqlcnnv10, tmp_sql_log, ref tmp_logcnt);
+                }
+                catch
+                {
+                    // ログ出力自体が失敗しても、コンバート処理の継続を優先しここでは何もしない
+                }
             }
             finally
             {
