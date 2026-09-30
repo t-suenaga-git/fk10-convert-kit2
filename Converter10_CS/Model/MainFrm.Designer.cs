@@ -193,6 +193,22 @@ namespace Converter10.Njc.Frm
             this.label2 = new System.Windows.Forms.Label();
             this.pre_table_connection_string = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.grpPreTableConn = new System.Windows.Forms.GroupBox();
+            this.lblPreConnDataSource = new System.Windows.Forms.Label();
+            this.txtPreConnDataSource = new System.Windows.Forms.TextBox();
+            this.lblPreConnInitialCatalog = new System.Windows.Forms.Label();
+            this.txtPreConnInitialCatalog = new System.Windows.Forms.TextBox();
+            this.lblPreConnUserID = new System.Windows.Forms.Label();
+            this.txtPreConnUserID = new System.Windows.Forms.TextBox();
+            this.lblPreConnPassword = new System.Windows.Forms.Label();
+            this.txtPreConnPassword = new System.Windows.Forms.TextBox();
+            this.lblPreConnConnectionTimeout = new System.Windows.Forms.Label();
+            this.txtPreConnConnectionTimeout = new System.Windows.Forms.TextBox();
+            this.lblPreConnPersistSecurityInfo = new System.Windows.Forms.Label();
+            this.txtPreConnPersistSecurityInfo = new System.Windows.Forms.TextBox();
+            this.btnPreConnDefaultAll = new System.Windows.Forms.Button();
+            this.btnPreConnPreviousAll = new System.Windows.Forms.Button();
+            this.btnPreConnClearAll = new System.Windows.Forms.Button();
             this.grpTimeOut = new System.Windows.Forms.GroupBox();
             this.txtTimeOut = new System.Windows.Forms.TextBox();
             this.lblTimeOutSec = new System.Windows.Forms.Label();
@@ -2717,6 +2733,7 @@ namespace Converter10.Njc.Frm
             this.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PictureBox2.TabIndex = 147;
             this.PictureBox2.TabStop = false;
+            this.PictureBox2.Visible = false;
             // 
             // tabPageSession
             // 
@@ -2724,6 +2741,7 @@ namespace Converter10.Njc.Frm
             this.tabPageSession.Controls.Add(this.label2);
             this.tabPageSession.Controls.Add(this.pre_table_connection_string);
             this.tabPageSession.Controls.Add(this.label1);
+            this.tabPageSession.Controls.Add(this.grpPreTableConn);
             this.tabPageSession.Controls.Add(this.grpTimeOut);
             this.tabPageSession.Controls.Add(this.lblSessionCaution);
             this.tabPageSession.Controls.Add(this.lblHSessionDescription1);
@@ -2753,22 +2771,182 @@ namespace Converter10.Njc.Frm
             // 
             // pre_table_connection_string
             // 
+            this.pre_table_connection_string.BackColor = System.Drawing.SystemColors.Control;
             this.pre_table_connection_string.Location = new System.Drawing.Point(122, 495);
             this.pre_table_connection_string.Name = "pre_table_connection_string";
+            this.pre_table_connection_string.ReadOnly = true;
             this.pre_table_connection_string.Size = new System.Drawing.Size(504, 25);
             this.pre_table_connection_string.TabIndex = 17;
             this.pre_table_connection_string.Text = "Persist Security Info=True;Data Source = ;Initial Catalog = ;User ID = ;Password " +
     "= ;Connection Timeout = 40";
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(10, 497);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(111, 18);
             this.label1.TabIndex = 16;
             this.label1.Text = "Preテーブル読込元";
-            // 
+            //
+            // grpPreTableConn
+            //
+            this.grpPreTableConn.Controls.Add(this.lblPreConnDataSource);
+            this.grpPreTableConn.Controls.Add(this.txtPreConnDataSource);
+            this.grpPreTableConn.Controls.Add(this.lblPreConnInitialCatalog);
+            this.grpPreTableConn.Controls.Add(this.txtPreConnInitialCatalog);
+            this.grpPreTableConn.Controls.Add(this.lblPreConnUserID);
+            this.grpPreTableConn.Controls.Add(this.txtPreConnUserID);
+            this.grpPreTableConn.Controls.Add(this.lblPreConnPassword);
+            this.grpPreTableConn.Controls.Add(this.txtPreConnPassword);
+            this.grpPreTableConn.Controls.Add(this.lblPreConnConnectionTimeout);
+            this.grpPreTableConn.Controls.Add(this.txtPreConnConnectionTimeout);
+            this.grpPreTableConn.Controls.Add(this.lblPreConnPersistSecurityInfo);
+            this.grpPreTableConn.Controls.Add(this.txtPreConnPersistSecurityInfo);
+            this.grpPreTableConn.Controls.Add(this.btnPreConnDefaultAll);
+            this.grpPreTableConn.Controls.Add(this.btnPreConnPreviousAll);
+            this.grpPreTableConn.Controls.Add(this.btnPreConnClearAll);
+            this.grpPreTableConn.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.grpPreTableConn.Location = new System.Drawing.Point(419, 158);
+            this.grpPreTableConn.Name = "grpPreTableConn";
+            this.grpPreTableConn.Size = new System.Drawing.Size(460, 330);
+            this.grpPreTableConn.TabIndex = 9;
+            this.grpPreTableConn.TabStop = false;
+            this.grpPreTableConn.Text = "Preテーブル読込元(個別入力)";
+            //
+            // lblPreConnDataSource
+            //
+            this.lblPreConnDataSource.Location = new System.Drawing.Point(8, 30);
+            this.lblPreConnDataSource.Name = "lblPreConnDataSource";
+            this.lblPreConnDataSource.Size = new System.Drawing.Size(150, 20);
+            this.lblPreConnDataSource.TabIndex = 0;
+            this.lblPreConnDataSource.Text = "サーバー名";
+            this.lblPreConnDataSource.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            //
+            // txtPreConnDataSource
+            //
+            this.txtPreConnDataSource.Location = new System.Drawing.Point(168, 27);
+            this.txtPreConnDataSource.Name = "txtPreConnDataSource";
+            this.txtPreConnDataSource.Size = new System.Drawing.Size(280, 27);
+            this.txtPreConnDataSource.TabIndex = 1;
+            this.txtPreConnDataSource.TextChanged += new System.EventHandler(this.PreConnTextBox_TextChanged);
+            //
+            // lblPreConnInitialCatalog
+            //
+            this.lblPreConnInitialCatalog.Location = new System.Drawing.Point(8, 64);
+            this.lblPreConnInitialCatalog.Name = "lblPreConnInitialCatalog";
+            this.lblPreConnInitialCatalog.Size = new System.Drawing.Size(150, 20);
+            this.lblPreConnInitialCatalog.TabIndex = 2;
+            this.lblPreConnInitialCatalog.Text = "カタログ名";
+            this.lblPreConnInitialCatalog.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            //
+            // txtPreConnInitialCatalog
+            //
+            this.txtPreConnInitialCatalog.Location = new System.Drawing.Point(168, 61);
+            this.txtPreConnInitialCatalog.Name = "txtPreConnInitialCatalog";
+            this.txtPreConnInitialCatalog.Size = new System.Drawing.Size(280, 27);
+            this.txtPreConnInitialCatalog.TabIndex = 3;
+            this.txtPreConnInitialCatalog.TextChanged += new System.EventHandler(this.PreConnTextBox_TextChanged);
+            //
+            // lblPreConnUserID
+            //
+            this.lblPreConnUserID.Location = new System.Drawing.Point(8, 98);
+            this.lblPreConnUserID.Name = "lblPreConnUserID";
+            this.lblPreConnUserID.Size = new System.Drawing.Size(150, 20);
+            this.lblPreConnUserID.TabIndex = 4;
+            this.lblPreConnUserID.Text = "ログイン";
+            this.lblPreConnUserID.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            //
+            // txtPreConnUserID
+            //
+            this.txtPreConnUserID.Location = new System.Drawing.Point(168, 95);
+            this.txtPreConnUserID.Name = "txtPreConnUserID";
+            this.txtPreConnUserID.Size = new System.Drawing.Size(280, 27);
+            this.txtPreConnUserID.TabIndex = 5;
+            this.txtPreConnUserID.TextChanged += new System.EventHandler(this.PreConnTextBox_TextChanged);
+            //
+            // lblPreConnPassword
+            //
+            this.lblPreConnPassword.Location = new System.Drawing.Point(8, 132);
+            this.lblPreConnPassword.Name = "lblPreConnPassword";
+            this.lblPreConnPassword.Size = new System.Drawing.Size(150, 20);
+            this.lblPreConnPassword.TabIndex = 6;
+            this.lblPreConnPassword.Text = "パスワード";
+            this.lblPreConnPassword.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            //
+            // txtPreConnPassword
+            //
+            this.txtPreConnPassword.Location = new System.Drawing.Point(168, 129);
+            this.txtPreConnPassword.Name = "txtPreConnPassword";
+            this.txtPreConnPassword.Size = new System.Drawing.Size(280, 27);
+            this.txtPreConnPassword.TabIndex = 7;
+            this.txtPreConnPassword.UseSystemPasswordChar = true;
+            this.txtPreConnPassword.TextChanged += new System.EventHandler(this.PreConnTextBox_TextChanged);
+            //
+            // lblPreConnConnectionTimeout
+            //
+            this.lblPreConnConnectionTimeout.Location = new System.Drawing.Point(8, 163);
+            this.lblPreConnConnectionTimeout.Name = "lblPreConnConnectionTimeout";
+            this.lblPreConnConnectionTimeout.Size = new System.Drawing.Size(150, 33);
+            this.lblPreConnConnectionTimeout.TabIndex = 8;
+            this.lblPreConnConnectionTimeout.Text = "Connection Timeout";
+            this.lblPreConnConnectionTimeout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            //
+            // txtPreConnConnectionTimeout
+            //
+            this.txtPreConnConnectionTimeout.Location = new System.Drawing.Point(168, 169);
+            this.txtPreConnConnectionTimeout.Name = "txtPreConnConnectionTimeout";
+            this.txtPreConnConnectionTimeout.Size = new System.Drawing.Size(280, 27);
+            this.txtPreConnConnectionTimeout.TabIndex = 9;
+            this.txtPreConnConnectionTimeout.TextChanged += new System.EventHandler(this.PreConnTextBox_TextChanged);
+            //
+            // lblPreConnPersistSecurityInfo
+            //
+            this.lblPreConnPersistSecurityInfo.Location = new System.Drawing.Point(8, 202);
+            this.lblPreConnPersistSecurityInfo.Name = "lblPreConnPersistSecurityInfo";
+            this.lblPreConnPersistSecurityInfo.Size = new System.Drawing.Size(150, 33);
+            this.lblPreConnPersistSecurityInfo.TabIndex = 10;
+            this.lblPreConnPersistSecurityInfo.Text = "Persist Security Info";
+            this.lblPreConnPersistSecurityInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            //
+            // txtPreConnPersistSecurityInfo
+            //
+            this.txtPreConnPersistSecurityInfo.Location = new System.Drawing.Point(168, 208);
+            this.txtPreConnPersistSecurityInfo.Name = "txtPreConnPersistSecurityInfo";
+            this.txtPreConnPersistSecurityInfo.Size = new System.Drawing.Size(280, 27);
+            this.txtPreConnPersistSecurityInfo.TabIndex = 11;
+            this.txtPreConnPersistSecurityInfo.TextChanged += new System.EventHandler(this.PreConnTextBox_TextChanged);
+            //
+            // btnPreConnDefaultAll
+            //
+            this.btnPreConnDefaultAll.Location = new System.Drawing.Point(72, 250);
+            this.btnPreConnDefaultAll.Name = "btnPreConnDefaultAll";
+            this.btnPreConnDefaultAll.Size = new System.Drawing.Size(120, 28);
+            this.btnPreConnDefaultAll.TabIndex = 12;
+            this.btnPreConnDefaultAll.Text = "既定値";
+            this.btnPreConnDefaultAll.UseVisualStyleBackColor = true;
+            this.btnPreConnDefaultAll.Click += new System.EventHandler(this.btnPreConnDefaultAll_Click);
+            //
+            // btnPreConnPreviousAll
+            //
+            this.btnPreConnPreviousAll.Location = new System.Drawing.Point(200, 250);
+            this.btnPreConnPreviousAll.Name = "btnPreConnPreviousAll";
+            this.btnPreConnPreviousAll.Size = new System.Drawing.Size(120, 28);
+            this.btnPreConnPreviousAll.TabIndex = 13;
+            this.btnPreConnPreviousAll.Text = "前回値";
+            this.btnPreConnPreviousAll.UseVisualStyleBackColor = true;
+            this.btnPreConnPreviousAll.Click += new System.EventHandler(this.btnPreConnPreviousAll_Click);
+            //
+            // btnPreConnClearAll
+            //
+            this.btnPreConnClearAll.Location = new System.Drawing.Point(328, 250);
+            this.btnPreConnClearAll.Name = "btnPreConnClearAll";
+            this.btnPreConnClearAll.Size = new System.Drawing.Size(120, 28);
+            this.btnPreConnClearAll.TabIndex = 14;
+            this.btnPreConnClearAll.Text = "クリア";
+            this.btnPreConnClearAll.UseVisualStyleBackColor = true;
+            this.btnPreConnClearAll.Click += new System.EventHandler(this.btnPreConnClearAll_Click);
+            //
             // grpTimeOut
             // 
             this.grpTimeOut.Controls.Add(this.txtTimeOut);
@@ -2828,9 +3006,9 @@ namespace Converter10.Njc.Frm
             // Label36
             // 
             this.Label36.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.Label36.Location = new System.Drawing.Point(34, 401);
+            this.Label36.Location = new System.Drawing.Point(6, 401);
             this.Label36.Name = "Label36";
-            this.Label36.Size = new System.Drawing.Size(140, 20);
+            this.Label36.Size = new System.Drawing.Size(90, 20);
             this.Label36.TabIndex = 5;
             this.Label36.Text = "パスワード";
             this.Label36.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -2839,9 +3017,9 @@ namespace Converter10.Njc.Frm
             // Label35
             // 
             this.Label35.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.Label35.Location = new System.Drawing.Point(34, 361);
+            this.Label35.Location = new System.Drawing.Point(6, 361);
             this.Label35.Name = "Label35";
-            this.Label35.Size = new System.Drawing.Size(140, 20);
+            this.Label35.Size = new System.Drawing.Size(90, 20);
             this.Label35.TabIndex = 4;
             this.Label35.Text = "ログイン";
             this.Label35.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -2861,20 +3039,20 @@ namespace Converter10.Njc.Frm
             // Label30
             // 
             this.Label30.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.Label30.Location = new System.Drawing.Point(34, 281);
+            this.Label30.Location = new System.Drawing.Point(30, 281);
             this.Label30.Name = "Label30";
-            this.Label30.Size = new System.Drawing.Size(140, 20);
+            this.Label30.Size = new System.Drawing.Size(70, 20);
             this.Label30.TabIndex = 2;
             this.Label30.Text = "サーバー名";
-            this.Label30.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Label30.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Label30.UseCompatibleTextRendering = true;
             // 
             // Label13
             // 
             this.Label13.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.Label13.Location = new System.Drawing.Point(34, 321);
+            this.Label13.Location = new System.Drawing.Point(6, 321);
             this.Label13.Name = "Label13";
-            this.Label13.Size = new System.Drawing.Size(140, 20);
+            this.Label13.Size = new System.Drawing.Size(90, 20);
             this.Label13.TabIndex = 3;
             this.Label13.Text = "カタログ名";
             this.Label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -2890,7 +3068,7 @@ namespace Converter10.Njc.Frm
             this.grp10ConnectInfo.Controls.Add(this.txtV10Server);
             this.grp10ConnectInfo.Controls.Add(this.lblV10);
             this.grp10ConnectInfo.Font = new System.Drawing.Font("メイリオ", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.grp10ConnectInfo.Location = new System.Drawing.Point(190, 158);
+            this.grp10ConnectInfo.Location = new System.Drawing.Point(104, 158);
             this.grp10ConnectInfo.Name = "grp10ConnectInfo";
             this.grp10ConnectInfo.Size = new System.Drawing.Size(300, 330);
             this.grp10ConnectInfo.TabIndex = 8;
@@ -11193,6 +11371,22 @@ namespace Converter10.Njc.Frm
         private TextBox pre_table_connection_string;
         private Label label1;
         private Label label2;
+        private GroupBox grpPreTableConn;
+        private Label lblPreConnDataSource;
+        private TextBox txtPreConnDataSource;
+        private Label lblPreConnInitialCatalog;
+        private TextBox txtPreConnInitialCatalog;
+        private Label lblPreConnUserID;
+        private TextBox txtPreConnUserID;
+        private Label lblPreConnPassword;
+        private TextBox txtPreConnPassword;
+        private Label lblPreConnConnectionTimeout;
+        private TextBox txtPreConnConnectionTimeout;
+        private Label lblPreConnPersistSecurityInfo;
+        private TextBox txtPreConnPersistSecurityInfo;
+        private Button btnPreConnDefaultAll;
+        private Button btnPreConnPreviousAll;
+        private Button btnPreConnClearAll;
     }
 
 }

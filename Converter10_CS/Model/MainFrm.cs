@@ -101,6 +101,7 @@ namespace Converter10.Njc.Frm
             dcv_exedir = Path.GetDirectoryName(dcv_exepath);
             InitializeComponent();
             FormClosing += MainFrm_FormClosing;
+            LoadPreTableConnectionSettings();
         }
 
         // ×ボタン経由でCloseが呼ばれた場合に、アプリ固有の「終了」ボタン(btnEnd)と
@@ -112,6 +113,7 @@ namespace Converter10.Njc.Frm
         {
             if (closingViaBtnEnd)
             {
+                SavePreTableConnectionSettings();
                 return;
             }
 
