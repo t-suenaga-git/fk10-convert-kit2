@@ -3565,6 +3565,36 @@ namespace Converter10.Njc.Common
         }
 
         /// <summary>
+        /// 文字列中の全角数字(０-９)だけを半角数字(0-9)に変換します。
+        /// 漢字・カタカナ・ひらがな等、数字以外の文字には一切手を加えません。
+        /// </summary>
+        /// <remarks>
+        /// 20261002 入金項目名の全角半角不一致によるマスタ紐付けエラー対応のため追加。
+        /// </remarks>
+        private static string ToHalfWidthDigits(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+
+            var sb = new System.Text.StringBuilder(value.Length);
+            foreach (char c in value)
+            {
+                if (c >= '０' && c <= '９')
+                {
+                    sb.Append((char)(c - '０' + '0'));
+                }
+                else
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        /// <summary>
         /// 有無参照データチェックメソッド呼出
         /// '20160829 メールアドレス、URLの正規化処理を追加 Optionalで引数を追加
         /// </summary>
@@ -3812,7 +3842,11 @@ namespace Converter10.Njc.Common
                 // 20161004 口座種別のデフォルト値設定処理追加 -add end
                 case "入金項目":
                     {
-                        normalflg = Chk_DataMstExist_RelItem(CommonModule.Hash_Rel_Nkinkomk, value, ref chkvalue, chkkbn, ref errstr);
+                        // 20261002 入金項目名に全角数字(例:２４時間サポート)が含まれていると、
+                        // 紐付マスタ(半角数字で登録)とキーが一致せず「マスタデータが存在しない」
+                        // 扱いになっていたため、検索キーの全角数字のみを半角に正規化する。
+                        // (カタカナ・漢字等、数字以外の文字はそのまま)
+                        normalflg = Chk_DataMstExist_RelItem(CommonModule.Hash_Rel_Nkinkomk, ToHalfWidthDigits(value), ref chkvalue, chkkbn, ref errstr);
                         break;
                     }
                 case "入金区分":
