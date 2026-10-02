@@ -7280,19 +7280,47 @@ namespace Converter10.Njc.Frm
                 flg = false;
             }
 
+            // 20261002 Preテーブル読込元の接続を、接続確認ボタンの時点で実際に検証するための修正。
+            // 従来はApplicationDbContextを生成するだけで、EFの遅延接続によりここでは
+            // 認証エラー等が検出できず、後の画面(対象項目選択)で初めてクエリ実行時に
+            // 無言で例外(未処理のクラッシュ画面)になっていた。
+            if (flg)
+            {
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(pre_table_connection_string.Text))
+                    {
+                        MainFrmHelper.db = new ApplicationDbContext(sqlcnnv10.ConnectionString);
+                    }
+                    else
+                    {
+                        MainFrmHelper.db = new ApplicationDbContext(pre_table_connection_string.Text);
+                    }
+
+                    // EFは遅延接続のため、ここで明示的に接続を開いて検証する
+                    MainFrmHelper.db.Database.Connection.Open();
+                    MainFrmHelper.db.Database.Connection.Close();
+                }
+                catch
+                {
+                    if (string.IsNullOrEmpty(condb))
+                    {
+                        condb = "Preテーブル読込元DB";
+                    }
+                    else
+                    {
+                        condb = condb + "、" + "Preテーブル読込元DB";
+                    }
+                    flg = false;
+
+                    MainFrmHelper.db?.Dispose();
+                    MainFrmHelper.db = null;
+                }
+            }
+
             // 接続結果
             if (flg)
             {
-                //一旦ここでApplicationDbContextのインスタンス生成を行う
-                if (string.IsNullOrWhiteSpace(pre_table_connection_string.Text))
-                {
-                    MainFrmHelper.db = new ApplicationDbContext(sqlcnnv10.ConnectionString);
-                }
-                else
-                {
-                    MainFrmHelper.db = new ApplicationDbContext(pre_table_connection_string.Text);
-                }
-
                 // 成功時
                 CommonModule.MsgResult = MessageBox.Show(CommonModule.MSG_CNN_SUCCESS_A, "成功", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 btnNext.Enabled = true;
