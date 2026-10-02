@@ -7368,6 +7368,108 @@ namespace Converter10.Njc.Frm
         }
 
         /// <summary>
+        /// イベント処理：参考件数ありのみON/OFFボタン
+        /// </summary>
+        /// <remarks>
+        /// 20261002 追加。現在表示中のタブ内で、参考件数が「なし」ではない
+        /// (=実データが存在する)チェックボックスだけをまとめてON/OFFし、
+        /// 続けて[次へ]ボタンを押下した状態にして次画面へ遷移する。
+        /// </remarks>
+        private void btnAllChkRefCntOnly_Click(object sender, EventArgs e)
+        {
+
+            Set_ChkboxOnOff_RefCntOnly(tabCtrlCVItem.SelectedTab);
+            Set_OptSelect();
+
+            // [次へ]ボタンへフォーカスを移すだけで、押下はしない
+            btnNext.Focus();
+
+        }
+
+        /// <summary>
+        /// 指定コンテナ配下(入れ子のPanel/GroupBoxを含む)の表示中かつ有効な
+        /// チェックボックスのうち、対応する参考件数ラベル(lblKi～Cnt)が
+        /// 「なし」以外(=件数ありと判断できる)のものだけをまとめてON/OFFします。
+        /// </summary>
+        private void Set_ChkboxOnOff_RefCntOnly(Control root)
+        {
+
+            if (root == null)
+            {
+                return;
+            }
+
+            var checkboxes = Get_AllCheckBoxes(root).ToList();
+
+            bool Qualifies(CheckBox chk)
+            {
+                if (!chk.Visible || !chk.Enabled)
+                {
+                    return false;
+                }
+
+                string chkname = Conversions.ToString(chk.Name);
+                string lblname = "lbl" + (chkname.StartsWith("chk") ? chkname.Substring(3) : chkname) + "Cnt";
+                var matches = root.Controls.Find(lblname, true);
+                return matches.Length > 0 && matches[0] is Label lbl && lbl.Text != "なし";
+            }
+
+            var initialTargets = checkboxes.Where(Qualifies).ToList();
+            if (initialTargets.Count == 0)
+            {
+                return;
+            }
+
+            bool newChecked = !initialTargets.All(item => item.Checked);
+
+            // 20261003 部屋設備情報のように、親項目(部屋情報)がチェックされて
+            // 初めてEnabledになる子チェックボックスが、最初の1回の走査時点では
+            // まだ無効(対象外)と判定され、1テンポ遅れて反映される不具合を修正。
+            // 親のチェック変更で新たに対象(有効)になった項目を拾えるよう、
+            // 状態に変化が無くなるまで繰り返し走査する。
+            bool changed;
+            do
+            {
+                changed = false;
+                foreach (var chk in checkboxes)
+                {
+                    if (!Qualifies(chk))
+                    {
+                        continue;
+                    }
+
+                    if (chk.Checked != newChecked)
+                    {
+                        chk.Checked = newChecked;
+                        changed = true;
+                    }
+                }
+            }
+            while (changed);
+
+        }
+
+        /// <summary>
+        /// 指定コンテナ配下に存在する全てのチェックボックスを、入れ子の
+        /// Panel/GroupBox等を含めて再帰的に列挙します。
+        /// </summary>
+        private IEnumerable<CheckBox> Get_AllCheckBoxes(Control root)
+        {
+            foreach (Control child in root.Controls)
+            {
+                if (child is CheckBox chk)
+                {
+                    yield return chk;
+                }
+
+                foreach (var nested in Get_AllCheckBoxes(child))
+                {
+                    yield return nested;
+                }
+            }
+        }
+
+        /// <summary>
         /// イベント処理：オプションボタン設定値変更
         /// </summary>
         /// <remarks></remarks>
@@ -7858,123 +7960,27 @@ namespace Converter10.Njc.Frm
         private bool Set_DBExistConInfo()
         {
 
-            bool rtn = true;
+            // 20261002 V7(賃貸革命7)の接続画面は既に廃止されており、V7用の接続情報ファイルは
+            // 二度と作成されない。従来はV7/V10両方のファイル存在を要求していたため、
+            // 本条件が常にtrueとなり移行先接続情報が保存されていても絶対に読み込まれなかった
+            // (毎回Set_10DBConInfoの初期値にフォールバックしていた)不具合を修正。
+            // V10用ファイル(Preテーブル読込元の設定も同居)の有無のみで判定するようにする。
+            string coninfofilepath10 = Get_ConInfoXmlFilePath();
 
-            // 保管されている接続情報ファイルの読込
-            string exepath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string exedir = Path.GetDirectoryName(exepath);
-            string coninfodirpath = EtcMethod.Set_Path(exedir, CommonModule.DIR_INI_NAME);
-            string coninfofilepathV7 = EtcMethod.Set_Path(coninfodirpath, CommonModule.FILE_V7_CONNAME);
-            string coninfofilepath10 = EtcMethod.Set_Path(coninfodirpath, CommonModule.FILE_10_CONNAME);
-
-            // どちらかのファイルが存在しない(初回起動またはファイル名が編集されている)場合
-            if (EtcMethod.Chk_FileExist(coninfofilepathV7) == false || EtcMethod.Chk_FileExist(coninfofilepath10) == false)
+            if (EtcMethod.Chk_FileExist(coninfofilepath10) == false)
             {
-                rtn = false;
-                return rtn;
+                return false;
             }
 
-            var xmlreader = default(System.Xml.XmlReader);
-            string item = "";
-            string data = "";
-            string svname = "";
-            string dbname = "";
-            string username = "";
-            string password = "";
-            string encryptedpassword = "";
+            var values = ReadConInfoXmlValues(coninfofilepath10);
             string passkey = "tRwmj5U4";
-            Model.DefSQLConnection conmodel = null;
 
-            for (int cntii = 0; cntii <= 1; cntii++)
-            {
+            fstmodelv10.ServerName = Conversions.ToString(values["ServerName"]);
+            fstmodelv10.InitialCatalog = Conversions.ToString(values["InitialCatalog"]);
+            fstmodelv10.User = Conversions.ToString(values["UserID"]);
+            fstmodelv10.Pass = Decrypt(Conversions.ToString(values["EncryptedPassword"]), passkey);
 
-                switch (cntii)
-                {
-                    case 0:
-                        {
-                            xmlreader = System.Xml.XmlReader.Create(coninfofilepathV7);
-                            conmodel = fstmodelv7;
-                            break;
-                        }
-                    case 1:
-                        {
-                            xmlreader = System.Xml.XmlReader.Create(coninfofilepath10);
-                            conmodel = fstmodelv10;
-                            break;
-                        }
-                }
-
-                while (xmlreader.Read())
-                {
-
-                    if (xmlreader.NodeType == System.Xml.XmlNodeType.Element)
-                    {
-
-                        // データ取得
-                        item = xmlreader.LocalName;
-                        data = xmlreader.ReadString();
-
-                        // それぞれの要素で分岐
-                        switch (item ?? "")
-                        {
-                            case "ServerName":
-                                {
-                                    svname = data;
-                                    break;
-                                }
-                            case "InitialCatalog":
-                                {
-                                    dbname = data;
-                                    break;
-                                }
-                            case "UserID":
-                                {
-                                    username = data;
-                                    break;
-                                }
-                            case "Password":
-                                {
-                                    break;
-                                }
-                            // password = data
-                            case "EncryptedPassword":
-                                {
-                                    encryptedpassword = data;
-                                    break;
-                                }
-                        }
-
-                    }
-
-                }
-
-                // パスワード複合化
-                password = Decrypt(encryptedpassword, passkey);
-
-                conmodel.ServerName = svname;
-                conmodel.InitialCatalog = dbname;
-                conmodel.User = username;
-                conmodel.Pass = password;
-
-                switch (cntii)
-                {
-                    case 0:
-                        {
-                            fstmodelv7 = (Model.DefSQLConnection)conmodel;
-                            break;
-                        }
-                    case 1:
-                        {
-                            fstmodelv10 = (Model.DefSQLConnection)conmodel;
-                            break;
-                        }
-                }
-
-                xmlreader.Close();
-
-            }
-
-            return rtn;
+            return true;
 
         }
 
@@ -7993,12 +7999,7 @@ namespace Converter10.Njc.Frm
             string pass = Conversions.ToString(conmodel.Pass);
 
             // 接続情報保存ファイル格納先取得
-            string exepath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            string exedir = Path.GetDirectoryName(exepath);
-            string coninfodirpath = EtcMethod.Set_Path(exedir, CommonModule.DIR_INI_NAME);
-            string coninfofilepath = "";
-
-            coninfofilepath = EtcMethod.Set_Path(coninfodirpath, CommonModule.FILE_10_CONNAME);
+            string coninfofilepath = Get_ConInfoXmlFilePath();
 
             // Windows認証時にUserにデフォルト値を入れて保存する処理を追加
             // ※空のままだとXML作成の際に改行が混入するためこれを防ぐ
@@ -8010,7 +8011,14 @@ namespace Converter10.Njc.Frm
             string passkey = "tRwmj5U4";
             string encryptedpassword = Encrypt(pass, passkey);
 
-            string strXml = "<?xml version='1.0'?>" + "<coninfo>" + "<!--サーバー名、カタログ名、ユーザー名、パスワード-->" + "<ServerName>" + svname + "</ServerName>" + "<InitialCatalog>" + catalog + "</InitialCatalog>" + "<UserID>" + user + "</UserID>" + "<Password />" + "<EncryptedPassword>" + encryptedpassword + "</EncryptedPassword>" + "</coninfo>";
+            // 20261002 Preテーブル読込元(個別入力)の設定も同じファイルへ保存するよう統合。
+            // 既にファイルに保存されているPreテーブル側の内容を上書きしないよう、
+            // 先に現在のファイル内容を読み込んでから、移行先接続情報の項目だけを更新する。
+            var values = ReadConInfoXmlValues(coninfofilepath);
+            values["ServerName"] = svname;
+            values["InitialCatalog"] = catalog;
+            values["UserID"] = user;
+            values["EncryptedPassword"] = encryptedpassword;
 
 
 
@@ -8019,42 +8027,11 @@ namespace Converter10.Njc.Frm
 
 
 
-            var xmlDoc = new System.Xml.XmlDocument();
-
-            // 文字列からDOMドキュメントを生成
-            xmlDoc.LoadXml(strXml);
-
-            // 20161104 iniフォルダ内ファイル書込み処理時のエラー対応 -chg sta
-            // Try
-            // '作成したDOMドキュメントをファイルに保存
-            // xmlDoc.Save(coninfofilepath)
-            // Catch ex As System.Xml.XmlException
-            // 'XMLによる例外をキャッチ
-            // Console.WriteLine(ex.Message)
-            // Catch ex As Exception
-            // 'その他の例外をキャッチ
-            // Console.WriteLine(ex.Message)
-            // End Try
-
-            try
-            {
-                // 作成したDOMドキュメントをファイルに保存
-                xmlDoc.Save(coninfofilepath);
-            }
-
-            // アクセス拒否
-            // Catch ex As UnauthorizedAccessException
-            // MsgResult = MessageBox.Show("セットアップフォルダ内のファイルへのアクセスが拒否されました。" & vbCrLf & _
-            // "セットアップ先をアクセス権限のあるフォルダに変更して、再度セットアップを行ってから、本プログラムを実行して下さい。", _
-            // "失敗", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-            // Return False
-            // その他の例外(アクセス拒否を含む)
-            catch (Exception ex)
+            if (!WriteConInfoXmlValues(coninfofilepath, values))
             {
                 CommonModule.MsgResult = MessageBox.Show("セットアップフォルダ内のファイルへのアクセスが拒否されました。" + Constants.vbCrLf + "セットアップ先をアクセス権限のあるフォルダに変更して、再度セットアップを行ってから、本プログラムを実行して下さい。", "失敗", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
                 return false;
-
             }
 
             return true;

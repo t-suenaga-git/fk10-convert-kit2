@@ -350,6 +350,7 @@ namespace Converter10.Njc.Frm
             this.tabPageSelect = new System.Windows.Forms.TabPage();
             this.grpExistMidToBaseMid = new System.Windows.Forms.GroupBox();
             this.btnAllChk = new System.Windows.Forms.Button();
+            this.btnAllChkRefCntOnly = new System.Windows.Forms.Button();
             this.lblDatacvSelectCaution = new System.Windows.Forms.Label();
             this.lblLine2 = new System.Windows.Forms.Label();
             this.lblHidden2 = new System.Windows.Forms.Label();
@@ -4417,6 +4418,7 @@ namespace Converter10.Njc.Frm
             this.tabPageSelect.BackColor = System.Drawing.SystemColors.Menu;
             this.tabPageSelect.Controls.Add(this.grpExistMidToBaseMid);
             this.tabPageSelect.Controls.Add(this.btnAllChk);
+            this.tabPageSelect.Controls.Add(this.btnAllChkRefCntOnly);
             this.tabPageSelect.Controls.Add(this.lblDatacvSelectCaution);
             this.tabPageSelect.Controls.Add(this.lblLine2);
             this.tabPageSelect.Controls.Add(this.lblHidden2);
@@ -4444,7 +4446,8 @@ namespace Converter10.Njc.Frm
             // 
             this.btnAllChk.Image = ((System.Drawing.Image)(resources.GetObject("btnAllChk.Image")));
             this.btnAllChk.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAllChk.Location = new System.Drawing.Point(689, 87);
+            this.btnAllChk.Location = new System.Drawing.Point(524, 87);
+            // (幅は元の200へ復元。右隣のbtnAllChkRefCntOnlyを縮める形で帳尻を合わせる)
             this.btnAllChk.Name = "btnAllChk";
             this.btnAllChk.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
             this.btnAllChk.Size = new System.Drawing.Size(200, 30);
@@ -4453,7 +4456,18 @@ namespace Converter10.Njc.Frm
             this.btnAllChk.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnAllChk.UseVisualStyleBackColor = true;
             this.btnAllChk.Click += new System.EventHandler(this.btnAllChk_Click);
-            // 
+            //
+            // btnAllChkRefCntOnly
+            //
+            this.btnAllChkRefCntOnly.Location = new System.Drawing.Point(734, 87);
+            this.btnAllChkRefCntOnly.Name = "btnAllChkRefCntOnly";
+            this.btnAllChkRefCntOnly.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
+            this.btnAllChkRefCntOnly.Size = new System.Drawing.Size(155, 30);
+            this.btnAllChkRefCntOnly.TabIndex = 4;
+            this.btnAllChkRefCntOnly.Text = "件数ありのみON/OFF";
+            this.btnAllChkRefCntOnly.UseVisualStyleBackColor = true;
+            this.btnAllChkRefCntOnly.Click += new System.EventHandler(this.btnAllChkRefCntOnly_Click);
+            //
             // lblDatacvSelectCaution
             // 
             this.lblDatacvSelectCaution.BackColor = System.Drawing.SystemColors.Menu;
@@ -10548,6 +10562,7 @@ namespace Converter10.Njc.Frm
         }
         internal Button btnConnectTest;
         internal Button btnAllChk;
+        internal Button btnAllChkRefCntOnly;
         internal CheckBox chkRelationFile;
         internal Label Label9;
         internal Button btnMidFileCheck;
