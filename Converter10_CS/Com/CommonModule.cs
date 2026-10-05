@@ -112,6 +112,7 @@ namespace Converter10
         public const string LOG_SYU_MIDHEADERCHK = "中間ファイルヘッダーチェック";
         public const string LOG_SYU_MIDDATACHK = "中間ファイルデータチェック";
         public const string LOG_SYU_DBWRITE = "DB書込";
+        public const string LOG_SYU_SQLEXEC = "SQL実行";                              // 20261005 DBExec.Exec_NonQueryの失敗ログ用
 
         // ログ_文字列(処理項目)
         public const string LOG_SYORIKOMK_STA = "コンバートツール起動";

@@ -5316,9 +5316,86 @@ namespace Converter10.Njc.Common
             catch (Exception ex)
             {
                 rtn = false;
+                // 20261005 従来は失敗が完全に無言で捨てられ、原因調査が困難だったため、cv_logへエラー内容を出力する
+                Write_SqlErrorLog(sqlcnnv10, qry, ex);
             }
             return rtn;
 
+        }
+
+        // ログ出力処理自身の再入(ログ書込みの失敗がさらにログ書込みを呼ぶこと)を防ぐためのフラグ
+        [ThreadStatic]
+        private static bool _writingSqlErrorLog;
+
+        /// <summary>
+        /// Exec_NonQueryで失敗したSQLのエラー内容を、コンバーターログ(cv_log)へ書き込みます。
+        /// </summary>
+        /// <remarks>
+        /// ・ログ出力はExec_NonQueryを経由せず、専用に直接実行する(再帰防止)。
+        /// ・ログ出力自体が失敗しても(cv_log未作成の時期など)、呼び出し元の処理には影響させない。
+        /// ・cv_log/midchk_logへのINSERT失敗は、ノイズになるため出力しない。
+        /// ・ログ項目の最大長(対象データ100、不備原因200等)に収まるよう切り詰める。
+        /// </remarks>
+        private static void Write_SqlErrorLog(SqlConnection sqlcnnv10, string qry, Exception ex)
+        {
+            if (_writingSqlErrorLog)
+            {
+                return;
+            }
+
+            _writingSqlErrorLog = true;
+            try
+            {
+                if (sqlcnnv10 == null || sqlcnnv10.State != ConnectionState.Open)
+                {
+                    return;
+                }
+
+                string sql = qry ?? "";
+                if (sql.IndexOf(CommonModule.LOG_TMP_TABLENAME, StringComparison.OrdinalIgnoreCase) >= 0
+                    || sql.IndexOf(CommonModule.LOG_TMP_MIDCHKTABLENAME, StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return;
+                }
+
+                // 対象テーブル名の推定(INSERT INTO / UPDATE / DELETE FROM / CREATE TABLE 等の直後の識別子)
+                string tblname = "-";
+                var m = Regex.Match(sql, @"(?is)\b(?:INSERT\s+INTO|UPDATE|DELETE\s+FROM|DELETE|TRUNCATE\s+TABLE|DROP\s+TABLE(?:\s+IF\s+EXISTS)?|CREATE\s+TABLE|ALTER\s+TABLE)\s+\[?([A-Za-z0-9_#\.]+)");
+                if (m.Success)
+                {
+                    tblname = m.Groups[1].Value;
+                }
+
+                string oneline = Regex.Replace(sql, @"\s+", " ").Trim();
+                string sqlhead = oneline.Length > 100 ? oneline.Substring(0, 100) : oneline;
+
+                int errno = 0;
+                if (ex is SqlException sqlex)
+                {
+                    errno = sqlex.Number;
+                }
+                string msg = Regex.Replace(ex.Message ?? "", @"\s+", " ").Replace("'", "’").Replace(",", "，");
+                if (msg.Length > 200)
+                {
+                    msg = msg.Substring(0, 200);
+                }
+
+                string kekka = errno != 0 ? "SQL実行エラー(エラー番号 " + errno.ToString() + ")" : "SQL実行エラー";
+                string logvalue = LogSetting.Set_LogValue(43, CommonModule.LOG_SYU_SQLEXEC, tblname, kekka, sqlhead, msg, "-", "-", "-", tblname.Length > 50 ? tblname.Substring(0, 50) : tblname);
+                string logsql = LogSetting.Get_LogTblInsertQry(logvalue, false);
+                using (var cmd = new SqlCommand(logsql, sqlcnnv10))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                // ログ出力に失敗しても、本来の処理を優先して何もしない
+            }
+            finally
+            {
+                _writingSqlErrorLog = false;
+            }
         }
 
     }
@@ -8516,6 +8593,13 @@ namespace Converter10.Njc.Common
                     {
                         tmp_logitem[1] = CommonModule.LOG_RUI_TYUUI;
                         tmp_logitem[2] = CommonModule.LOG_SYU_DBWRITE;
+                        break;
+                    }
+
+                case 43: // SQL実行時エラー(DBExec.Exec_NonQueryの失敗)  20261005 追加
+                    {
+                        tmp_logitem[1] = CommonModule.LOG_RUI_TYUUI;
+                        tmp_logitem[2] = CommonModule.LOG_SYU_SQLEXEC;
                         break;
                     }
 
