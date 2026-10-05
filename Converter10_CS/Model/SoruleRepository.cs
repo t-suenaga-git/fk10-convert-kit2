@@ -1958,7 +1958,7 @@ namespace Converter10.Njc.Repository
             {
 
                 string tmp_sql = "";
-                tmp_sql = tmp_sql + " INSERT INTO sorule_nk_cmrule ";
+                tmp_sql = tmp_sql + " INSERT INTO sorule_nk_cmrule (sorule_guid,sorule_no,taisyokbn,nkin_sortorder,nkin_no,sokin_rit,kanrigak_rit,hosyo_flg,so_no) ";
                 tmp_sql = tmp_sql + " SELECT ";
                 tmp_sql = tmp_sql + " 	 sorule_guid ";
                 tmp_sql = tmp_sql + " 	,sorule_no ";

@@ -399,7 +399,7 @@ namespace Converter10
             string tmp_sql = "";
 
             // 一棟所有の仮レコード挿入
-            tmp_sql = tmp_sql + " INSERT INTO bkdata_syo ";
+            tmp_sql = tmp_sql + " INSERT INTO bkdata_syo (bk_guid,kn_no,sorule_guid,kasi1_ow_no,syo1_ow_no,kasi2_ow_no,syo2_ow_no,syo_startymd,syo_endymd,history) ";
             tmp_sql = tmp_sql + " SELECT ";
             tmp_sql = tmp_sql + " 	 bk_guid ";
             tmp_sql = tmp_sql + " 	,1 AS kn_no ";
@@ -418,7 +418,7 @@ namespace Converter10
             tmp_sql = "";
 
             // 区分所有の仮レコード挿入
-            tmp_sql = tmp_sql + " INSERT INTO hydata_syo ";
+            tmp_sql = tmp_sql + " INSERT INTO hydata_syo (hy_guid,kn_no,sorule_guid,kasi1_ow_no,syo1_ow_no,kasi2_ow_no,syo2_ow_no,syo_startymd,syo_endymd,history) ";
             tmp_sql = tmp_sql + " SELECT ";
             tmp_sql = tmp_sql + " 	 hy_guid ";
             tmp_sql = tmp_sql + " 	,1 AS kn_no ";
@@ -483,9 +483,9 @@ namespace Converter10
             sb.AppendLine(" FETCH NEXT FROM KysInfo INTO @kysno ");
             sb.AppendLine(" WHILE @@FETCH_STATUS = 0 ");
             sb.AppendLine(" BEGIN ");
-            sb.AppendLine(" 	INSERT INTO kysdata_koza VALUES(@kysno,1,1,NULL,NULL,1,NULL,'','','','','',NULL,NULL,'','','',1,NULL,2,1,NULL,NULL,'',1,0) ");
-            sb.AppendLine(" 	INSERT INTO kysdata_koza VALUES(@kysno,2,2,NULL,NULL,1,NULL,'','','','','',NULL,NULL,'','','',1,NULL,2,1,NULL,NULL,'',1,0) ");
-            sb.AppendLine(" 	INSERT INTO kysdata_koza VALUES(@kysno,3,3,NULL,NULL,1,NULL,'','','','','',NULL,NULL,'','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0) ");
+            sb.AppendLine(" 	INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg) VALUES(@kysno,1,1,NULL,NULL,1,NULL,'','','','','',NULL,NULL,'','','',1,NULL,2,1,NULL,NULL,'',1,0) ");
+            sb.AppendLine(" 	INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg) VALUES(@kysno,2,2,NULL,NULL,1,NULL,'','','','','',NULL,NULL,'','','',1,NULL,2,1,NULL,NULL,'',1,0) ");
+            sb.AppendLine(" 	INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg) VALUES(@kysno,3,3,NULL,NULL,1,NULL,'','','','','',NULL,NULL,'','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0) ");
             sb.AppendLine(" 	FETCH NEXT FROM KysInfo INTO @kysno ");
             sb.AppendLine(" END ");
             sb.AppendLine("  ");
@@ -504,7 +504,10 @@ namespace Converter10
 
             var sb = new StringBuilder();
             int cnt = 0;
+            // 20261005 fk8db_20260917でkydata_nkinの列が増えたため、列リストを明示する
+            // (従来の列指定なしINSERTは列数不一致で失敗し、Exec_NonQueryに握りつぶされて何も生成されなかった)
             sb.AppendLine(" INSERT INTO kydata_nkin ");
+            sb.AppendLine(" ( ky_guid,ky_recno,tuki_kbn,nkin_no,nkin_recno,nkin_sortorder,nkin_kbn,sq_gak,sq_zeikbn,sq_zeigak,calc_kbn,calc_nkinno,calc_monthcnt,sqsaki_no,nkbn_yotei,sq_mmkbn,frstart_ymd,frend_ymd,frsq_gak,sqstart_ymd,sq_ptn,sq_interval,sq_nen,sq_tuki,zei_rit,biko,nkin_guid,history,fr_kbn,frtekiyo_gak ) ");
             sb.AppendLine(" SELECT ");
             sb.AppendLine(" 	 ky_guid ");
             sb.AppendLine(" 	,ky_recno ");

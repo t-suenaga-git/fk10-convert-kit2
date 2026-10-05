@@ -1356,7 +1356,7 @@ namespace Converter10.Njc.Repository
                 int tmpcnt = 0;
 
                 // ①契約者口座No = 1 のデータを作成する
-                tmp_sql = tmp_sql + " INSERT INTO kysdata_koza ";
+                tmp_sql = tmp_sql + " INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg) ";
                 tmp_sql = tmp_sql + " SELECT ";
                 tmp_sql = tmp_sql + " 	 kys_no ";
                 tmp_sql = tmp_sql + " 	,1 AS kys_kozano ";
