@@ -1958,21 +1958,32 @@ namespace Converter10.Njc.Repository
             {
 
                 string tmp_sql = "";
+                // 20261005 hosyo_flgは入金項目ごとの値で、同一ルール内で0/1が混在する。従来はDISTINCT(ルール,hosyo_flg)で
+                // 挿入していたため、混在すると同一主キー(guid,no,7,0,0)が重複して文全体が失敗し、全ルールの
+                // その他請求行が作られなかった(エラーも出力されていなかった)。
+                // その他請求(taisyokbn=7)は送金率(sokin_rit)を0固定で作成するため、事後調整の規則
+                // 「送金率0ならhosyo_flgも0」に合わせて、hosyo_flgも0固定とし、1ルール1行にする。
+                // 追加コンバート等で既にtaisyokbn=7の行があるルールは対象外とし、再実行時の主キー重複を防ぐ。
                 tmp_sql = tmp_sql + " INSERT INTO sorule_nk_cmrule (sorule_guid,sorule_no,taisyokbn,nkin_sortorder,nkin_no,sokin_rit,kanrigak_rit,hosyo_flg,so_no) ";
                 tmp_sql = tmp_sql + " SELECT ";
-                tmp_sql = tmp_sql + " 	 sorule_guid ";
-                tmp_sql = tmp_sql + " 	,sorule_no ";
+                tmp_sql = tmp_sql + " 	 R.sorule_guid ";
+                tmp_sql = tmp_sql + " 	,R.sorule_no ";
                 tmp_sql = tmp_sql + " 	,7 AS taisyokbn ";
                 tmp_sql = tmp_sql + " 	,0 AS nkin_sortorder ";
                 tmp_sql = tmp_sql + " 	,0 AS nkin_no ";
                 tmp_sql = tmp_sql + " 	,0 AS sokin_rit ";
                 tmp_sql = tmp_sql + " 	,0 AS kanrigak_rit ";
-                tmp_sql = tmp_sql + " 	,hosyo_flg ";
+                tmp_sql = tmp_sql + " 	,0 AS hosyo_flg ";
                 tmp_sql = tmp_sql + " 	,NULL AS so_no ";
                 tmp_sql = tmp_sql + " FROM ";
                 tmp_sql = tmp_sql + " ( ";
-                tmp_sql = tmp_sql + " 	SELECT DISTINCT sorule_guid,sorule_no,hosyo_flg FROM sorule_nk_cmrule ";
-                tmp_sql = tmp_sql + " ) AS VW ";
+                tmp_sql = tmp_sql + " 	SELECT DISTINCT sorule_guid,sorule_no FROM sorule_nk_cmrule WHERE taisyokbn <> 7 ";
+                tmp_sql = tmp_sql + " ) AS R ";
+                tmp_sql = tmp_sql + " WHERE NOT EXISTS ";
+                tmp_sql = tmp_sql + " ( ";
+                tmp_sql = tmp_sql + " 	SELECT * FROM sorule_nk_cmrule AS X ";
+                tmp_sql = tmp_sql + " 	WHERE X.sorule_guid = R.sorule_guid AND X.sorule_no = R.sorule_no AND X.taisyokbn = 7 ";
+                tmp_sql = tmp_sql + " ) ";
                 return tmp_sql;
 
 
