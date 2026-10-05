@@ -1396,7 +1396,6 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('bkdata_detail','horei_zoseitakutitiikibiko','物件詳細情報','法令-造成宅地防災区域備考','','100','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('bkdata_detail','horei_tunamitiikibiko','物件詳細情報','法令-津波災害警戒区域備考','','100','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('bkdata_detail','svbunrui_no','物件詳細情報','サービス分類','-1','0','-1','','','','京王カスタマイズ'); ");
-                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('bkdata_detail','krbunrui_no','物件詳細情報','会計グループ分類','-1','0','-1','','','','画面上で設定する箇所が不明。必要？'); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('bkdata_detail','kanrinin_name','物件詳細情報','管理形態-管理人名','','400','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('bkdata_detail','kozo_other','物件詳細情報','その他建物構造','','100','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('bkdata_detail','kadoti_flg','物件詳細情報','角地フラグ','0','1','0','','','',''); ");
@@ -1710,7 +1709,6 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('hydata_detail','kaiyaku_ym','部屋詳細情報','解約日','1900/01/01','2100/12/31','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('hydata_detail','taikyo_ym','部屋詳細情報','退去日','1900/01/01','2100/12/31','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('hydata_detail','svbunrui_no','部屋詳細情報','サービス分類','0','0','0','','','','カスタマイズ項目の為対象外'); ");
-                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('hydata_detail','krbunrui_no','部屋詳細情報','会計グループ分類','0','0','0','','','','使用箇所が不明のため対象外'); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('hydata_detail','siyo_mokuteki','部屋詳細情報','使用目的','','50','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('hydata_detail','nyukyo_sintikukbn','部屋詳細情報','新築区分','1','2','1','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('hydata_detail','nyukyo_jikikbn','部屋詳細情報','入居時期区分','-1','3','-1','','','',''); ");
@@ -1772,6 +1770,7 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('hydata_kagi','history','部屋鍵情報','履歴','','-1','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('hydata_kagi','hokan','部屋鍵情報','保管場所','','100','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('hydata_kagi','gyshare','部屋鍵情報','業者間での情報共有','','100','','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('hydata_kagi','kagi_recno','部屋鍵情報','鍵レコードNo','1','9999','','','','','fk8db_20260917で主キーに追加された列。1レコード/鍵のためコード側で1を固定設定する'); ");
                         break;
                     }
                 case "部屋情報-部屋面積情報":
@@ -2056,7 +2055,6 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','cancelriyu','契約基本情報','キャンセル理由','','100','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','status_ymd','契約基本情報','ステータス変更日','1900/01/01','2100/12/31','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','cyukai_gy_fudono','契約基本情報','仲介業者No','1','999999','','','','',''); ");
-                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','syunin_logonuser_no','契約基本情報','取引主任者No','1','99999','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','tetuke_gak1','契約基本情報','手付預り額①','0','99999999999','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','tetuke_ymd1','契約基本情報','手付預り日①','1900/01/01','2100/12/31','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','tetuke_biko1','契約基本情報','手付預り備考①','','100','','','','',''); ");
@@ -2066,7 +2064,6 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','movefrom_kyguid','契約基本情報','移動元契約管理Guid','','16','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','moveto_kyguid','契約基本情報','移動先契約管理Guid','','16','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','svbunrui_no','契約基本情報','サービス分類','-1','-1','-1','','','',''); ");
-                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','krbunrui_no','契約基本情報','会計グループ分類','0','0','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','kaiyaku_uketukekbn','契約基本情報','解約受付区分','1','3','1','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','kaiyaku_months','契約基本情報','解約受付月数','0','99','3','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('kydata','kaiyaku_days','契約基本情報','解約受付日数','0','99','','','','',''); ");

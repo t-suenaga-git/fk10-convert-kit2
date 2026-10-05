@@ -798,7 +798,7 @@ namespace Converter10.Njc.Repository
                 // "kaiyaku_ym,taikyo_ym,svbunrui_no,krbunrui_no,siyo_mokuteki," & _
                 // "nyukyo_sintikukbn,nyukyo_jikikbn,torihiki_jisyakbn,keiyaku_kikankbn"
                 // 20160829 革命10バージョンアップに伴う修正 saikokbnを削除 -del
-                string fldnamegrp = "hy_guid,hygyomu_setflg,syozai_kaisu1,syozai_kaisu2,syozai_kaisu3," + "syozai_tikaflg1,syozai_tikaflg2,syozai_tikaflg3,mukikbn,kadoheya," + "balcony_mukikbn,nyukyo_jokyokbn,nyukyo_jokyomemo,nyukyo_syunflg," + "nyukyo_ym,nyukyo_syunkbn,nyukyo_joken,kakunin_ymd,bosyu_startflg," + "freerent_flg,freerent_month,freerent_detaill,hoken_kbn,hoken_kikan," + "hoken_gak,hoken_biko,torihiki_taiyokbn,torihiki_kyakutuke,torihiki_tesumoto," + "torihiki_tesukyaku,torihiki_futankasi,torihiki_futankari,torihiki_kyakutukecomment,torihiki_gykokokukatudokbn," + "moto_gy_fudono,koukoku_ryoukbn,koukoku_jogengak,koukoku_jokennaiyo,biko," + "addr_replaceflg,addr_replacecyome,addr_replacecyomeptn,addr_replacebanti,addr_replaceetc," + "hosyo_gyno,hosyo_naiyo,kyrui_nokbn,keiyaku_kikan,keiyaku_kijitu," + "parking_biko,parking_bikebiko,parking_cyurinbiko,shared_salespoint,history," + "keisai_bkflg,keisai_hyflg,keisai_bantiflg,keisai_mapflg,hosyo_kbn," + "koukoku_jogengakkbn,koukoku_jogenrit,koukoku_jogentaxkbn,commonsalespoint_useflg,floors_flg," + "jisya_no,jisya_tanto,nextnkin_kosindefault,toki_ymd,syo_kenriflg," + "syo_kenrikbn,other_kenriflg,btob_groupkbn,jisyaweb_osusumebk,kaiyaku_ym," + "taikyo_ym,svbunrui_no,krbunrui_no,siyo_mokuteki,nyukyo_sintikukbn," + "nyukyo_jikikbn,torihiki_jisyakbn,keiyaku_kikankbn";
+                string fldnamegrp = "hy_guid,hygyomu_setflg,syozai_kaisu1,syozai_kaisu2,syozai_kaisu3," + "syozai_tikaflg1,syozai_tikaflg2,syozai_tikaflg3,mukikbn,kadoheya," + "balcony_mukikbn,nyukyo_jokyokbn,nyukyo_jokyomemo,nyukyo_syunflg," + "nyukyo_ym,nyukyo_syunkbn,nyukyo_joken,kakunin_ymd,bosyu_startflg," + "freerent_flg,freerent_month,freerent_detaill,hoken_kbn,hoken_kikan," + "hoken_gak,hoken_biko,torihiki_taiyokbn,torihiki_kyakutuke,torihiki_tesumoto," + "torihiki_tesukyaku,torihiki_futankasi,torihiki_futankari,torihiki_kyakutukecomment,torihiki_gykokokukatudokbn," + "moto_gy_fudono,koukoku_ryoukbn,koukoku_jogengak,koukoku_jokennaiyo,biko," + "addr_replaceflg,addr_replacecyome,addr_replacecyomeptn,addr_replacebanti,addr_replaceetc," + "hosyo_gyno,hosyo_naiyo,kyrui_nokbn,keiyaku_kikan,keiyaku_kijitu," + "parking_biko,parking_bikebiko,parking_cyurinbiko,shared_salespoint,history," + "keisai_bkflg,keisai_hyflg,keisai_bantiflg,keisai_mapflg,hosyo_kbn," + "koukoku_jogengakkbn,koukoku_jogenrit,koukoku_jogentaxkbn,commonsalespoint_useflg,floors_flg," + "jisya_no,jisya_tanto,nextnkin_kosindefault,toki_ymd,syo_kenriflg," + "syo_kenrikbn,other_kenriflg,btob_groupkbn,jisyaweb_osusumebk,kaiyaku_ym," + "taikyo_ym,svbunrui_no,siyo_mokuteki,nyukyo_sintikukbn," + "nyukyo_jikikbn,torihiki_jisyakbn,keiyaku_kikankbn";
 
 
 
@@ -3131,7 +3131,7 @@ namespace Converter10.Njc.Repository
                 // テーブル名/フィールド名セット
                 string viewname_base = CommonModule.PRE_VIEW_NAME + viewname;
                 string tblname = "hydata_kagi";
-                string fldnamegrp = "hy_guid,kagi_no,honsu,biko,history," + "hokan,gyshare";
+                string fldnamegrp = "hy_guid,kagi_no,honsu,biko,history," + "hokan,gyshare,kagi_recno";
 
                 // 追加コンバート時の重複チェック用に既存データのキーを取得
                 if (!CommonModule.InitDBFlg)
@@ -3244,6 +3244,8 @@ namespace Converter10.Njc.Repository
 
                     // 固定値
                     model_cvitem.Vari_History = CommonModule.DefHistory;
+                    // 20261005 fk8db_20260917でhydata_kagiの主キーに追加された鍵レコードNo(NOT NULL・既定値なし)。1レコード/鍵のため1固定
+                    model_cvitem.Vari_Kagi_recno = "1";
                     // 20160927 汎用CV時の鍵情報の取得処理修正 -chg sta
                     // '20160613 鍵情報の取得処理修正 -chg sta
                     // ''20160531 鍵情報移行処理の修正 -chg sta

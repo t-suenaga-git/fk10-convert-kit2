@@ -212,6 +212,7 @@ namespace Converter10.Njc.Model
         public string Vari_History { get; set; }
         public string Vari_Hokan { get; set; }
         public string Vari_Gyshare { get; set; }
+        public string Vari_Kagi_recno { get; set; }
 
     }
 

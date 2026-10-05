@@ -90,7 +90,7 @@ namespace Converter10.Njc.Repository
 
                 // テーブル名/フィールド名セット
                 string tblname = "kydata";
-                string fldnamegrp = "ky_guid,bk_guid,hy_guid,ky_no,ky_deleteflg," + "delete_guid,delete_day,delete_cnt,syokai_kyymd,status," + "cancelriyu,status_ymd,cyukai_gy_fudono,syunin_logonuser_no,tetuke_gak1," + "tetuke_ymd1,tetuke_biko1,kaiyaku_flg,history,rowid," + "movefrom_kyguid,moveto_kyguid,svbunrui_no,krbunrui_no,kaiyaku_uketukekbn," + "kaiyaku_months,kaiyaku_days,kaiyaku_day,cyukai_tantoname,cyukai_tantonamesjis";
+                string fldnamegrp = "ky_guid,bk_guid,hy_guid,ky_no,ky_deleteflg," + "delete_guid,delete_day,delete_cnt,syokai_kyymd,status," + "cancelriyu,status_ymd,cyukai_gy_fudono,tetuke_gak1," + "tetuke_ymd1,tetuke_biko1,kaiyaku_flg,history,rowid," + "movefrom_kyguid,moveto_kyguid,svbunrui_no,kaiyaku_uketukekbn," + "kaiyaku_months,kaiyaku_days,kaiyaku_day,cyukai_tantoname,cyukai_tantonamesjis";
 
 
 
