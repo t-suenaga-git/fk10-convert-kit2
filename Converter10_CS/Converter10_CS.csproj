@@ -12,6 +12,9 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <EmbeddedResourceUseDependentUponConvention>true</EmbeddedResourceUseDependentUponConvention>
+    <!-- 64ビット対応：AnyCPU かつ 32ビット優先なし（64ビットOSでは64ビットで動作） -->
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DocumentationFile></DocumentationFile>
@@ -114,4 +117,27 @@
   <ItemGroup>
     <EmbeddedResource Remove="My Project\Resources.resx" />
   </ItemGroup>
+  <!-- 紐付ツール(RelationSetting)：先にビルドし、出力先の RelationSetting\ フォルダへコピーする -->
+  <ItemGroup>
+    <ProjectReference Include="..\RelationSetting\RelationSetting.vbproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
+      <Private>false</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Target Name="CopyRelationSetting" AfterTargets="Build">
+    <PropertyGroup>
+      <RelationSettingBinDir>$(MSBuildThisFileDirectory)..\RelationSetting\bin\$(Configuration)\</RelationSettingBinDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <!-- exe と、ClosedXML などの依存 DLL をまとめてコピー -->
+      <RelationSettingFiles Include="$(RelationSettingBinDir)**\*.exe;$(RelationSettingBinDir)**\*.dll;$(RelationSettingBinDir)**\*.config;$(RelationSettingBinDir)**\*.pdb" />
+    </ItemGroup>
+    <Copy SourceFiles="@(RelationSettingFiles)" DestinationFiles="@(RelationSettingFiles->'$(OutDir)RelationSetting\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <!-- 紐付設定ファイルのひな形：出力先に無いときだけコピー（設定済みの内容を上書きしない） -->
+    <ItemGroup>
+      <RelationTemplateFiles Include="$(MSBuildThisFileDirectory)..\RelationSetting\relationfile\*.xlsx" />
+    </ItemGroup>
+    <Copy SourceFiles="@(RelationTemplateFiles)" DestinationFolder="$(OutDir)RelationSetting\relationfile\" Condition="!Exists('$(OutDir)RelationSetting\relationfile\%(RelationTemplateFiles.Filename)%(RelationTemplateFiles.Extension)')" />
+  </Target>
 </Project>
