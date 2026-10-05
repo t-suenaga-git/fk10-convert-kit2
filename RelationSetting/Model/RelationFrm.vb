@@ -5095,7 +5095,15 @@ Namespace Njc.Frm
             fstmodelv7.InitialCatalog = tmp_v7con(2)
             fstmodelv7.User = tmp_v7con(3)
             fstmodelv7.Pass = tmp_v7con(4)
-            Call cnnV7.CnnSession(fstmodelv7, sqlcnnV7, tmp_v7con(0))
+            '20261005 V7接続情報が空の場合は接続しない(起動時に接続タイムアウトまで待たされるため) -chg sta
+            '※kit2(汎用)からの呼出ではV7接続情報は常に空で、V7は使用しない
+            'Call cnnV7.CnnSession(fstmodelv7, sqlcnnV7, tmp_v7con(0))
+            If fstmodelv7.ServerName.Trim = "" Then
+                sqlcnnV7 = New System.Data.SqlClient.SqlConnection()
+            Else
+                Call cnnV7.CnnSession(fstmodelv7, sqlcnnV7, tmp_v7con(0))
+            End If
+            '20261005 V7接続情報が空の場合は接続しない(起動時に接続タイムアウトまで待たされるため) -chg end
 
             '10接続情報
             Dim tmp_10con() As String = cmdline(4).Split(",")
