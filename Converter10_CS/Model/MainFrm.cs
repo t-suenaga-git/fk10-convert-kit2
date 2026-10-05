@@ -5358,7 +5358,7 @@ namespace Converter10.Njc.Frm
             // --------------------------------------------------
             btnMenuJizen.Enabled = true;
             btnMenuDatacv.Enabled = false;
-            btnMenuJigo.Enabled = true;
+            btnMenuJigo.Enabled = false;                                 // 20261003 事後調整は使用せず(押下するとエラーとなる)常時無効
             btnNext.Enabled = false;
 
             lblHMenuDatacv.Location = new Point((Size)lblKMenuDatacv.Location);
@@ -6939,20 +6939,12 @@ namespace Converter10.Njc.Frm
 
                 case "作業選択へ":
                     {
-                        // コンバート実績保持
+                        // 20261003 コンバート実績保持の確認ダイアログを廃止し、常に「いいえ」相当
+                        // (実績ファイル削除=次回は対象項目選択のチェック状態を保持しない)の動作に固定。
                         string seltab = tabCtrlMain.SelectedTab.Name;
                         if (seltab == "tabPageEndOK")
                         {
-                            CommonModule.MsgResult = MessageBox.Show(CommonModule.MSG_END_CV_TORIREKI, "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button2);
-                            if (CommonModule.MsgResult == DialogResult.Yes)
-                            {
-                                MakeFile_CVJisseki();
-                            }
-                            else
-                            {
-                                // ファイル削除
-                                DeleteFile_CVJisseki();
-                            }
+                            DeleteFile_CVJisseki();
                         }
 
                         tabPageManager.ChangeTabPageVisible(4, true);
@@ -6966,7 +6958,7 @@ namespace Converter10.Njc.Frm
                             {
                                 case (int)CommonModule.ConvertTypes._汎用:
                                     {
-                                        Set_Forcus("menu_jigo");
+                                        Set_Forcus("end");                // 20261003 事後調整を常時無効としたため、[終了]ボタンへフォーカス
                                         break;
                                     }
                             }
@@ -7364,6 +7356,9 @@ namespace Converter10.Njc.Frm
 
             Set_ChkboxOnOff(tabCtrlCVItem.SelectedTab.Name, true);
             Set_OptSelect();
+
+            // [次へ]ボタンへフォーカスを移すだけで、押下はしない
+            btnNext.Focus();
 
         }
 
