@@ -7404,6 +7404,25 @@ namespace Converter10.Njc.Frm
                 }
 
                 string chkname = Conversions.ToString(chk.Name);
+
+                // 20261008 請求情報(chkKiSqBase)は件数ラベルが1つではなく
+                // 未収(Mi)・預り(Az)・家主固定控除(OwKojo)に分かれており、
+                // 名前規則(lbl+名前+Cnt)では見つからず常に対象外になっていた。
+                // 表示中の件数ラベルのうち、1つでも「なし」以外があれば件数ありとする。
+                // (汎用の場合はOwKojoのみ、それ以外はMi/Azが表示される)
+                if (chkname == "chkKiSqBase")
+                {
+                    foreach (var sqname in new[] { "lblKiSqMiBaseCnt", "lblKiSqAzBaseCnt", "lblKiSqOwKojoBaseCnt" })
+                    {
+                        var sqmatches = root.Controls.Find(sqname, true);
+                        if (sqmatches.Length > 0 && sqmatches[0] is Label sqlbl && sqlbl.Visible && sqlbl.Text != "なし")
+                        {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
                 string lblname = "lbl" + (chkname.StartsWith("chk") ? chkname.Substring(3) : chkname) + "Cnt";
                 var matches = root.Controls.Find(lblname, true);
                 return matches.Length > 0 && matches[0] is Label lbl && lbl.Text != "なし";
