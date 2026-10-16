@@ -6265,6 +6265,30 @@ namespace Converter10.Njc.Common
             // キーNoと項目guidを紐付けたハッシュテーブルを作成
             DBExec.Exec_DataReader_Col_Hash(tmp_sql, ref sqlcnnv10, ref hash);
 
+            // 20261016 fk8db_20260917で設備マスタのグループ名が変更されたため、
+            // Preテーブルの列名(旧グループ名)と一致せず「マスタ不一致」になっていた。
+            // 新グループ名のキーに対し、旧グループ名のキーも同じ項目guidで登録して読み替える。
+            var groupRenames = new Dictionary<string, string>
+            {
+                { "設備・家電・家具", "室内設備・家電・家具" },
+                { "付帯施設・その他設備", "付帯施設・設備" }
+            };
+            foreach (var key in hash.Keys.ToList())
+            {
+                foreach (var rename in groupRenames)
+                {
+                    string newprefix = rename.Key + CommonModule.STR_SPLIT_1;
+                    if (key.StartsWith(newprefix, StringComparison.Ordinal))
+                    {
+                        string legacykey = rename.Value + CommonModule.STR_SPLIT_1 + key.Substring(newprefix.Length);
+                        if (!hash.ContainsKey(legacykey))
+                        {
+                            hash[legacykey] = hash[key];
+                        }
+                    }
+                }
+            }
+
         }
 
     }
