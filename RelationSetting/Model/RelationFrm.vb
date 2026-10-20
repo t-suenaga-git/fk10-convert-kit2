@@ -2565,34 +2565,55 @@ Namespace Njc.Frm
             Dim rtn As Boolean = True
             Dim relfilepath As String = EtcMethod.Set_Path(RelDirPath, REL_FILENAME & ".xlsx")
 
-            If File.Exists(relfilepath) = False Then
-                MsgResult = MessageBox.Show("紐付設定ファイルが存在しないためコンバートを続行できません。" & vbCrLf & _
-                                            "再度セットアップを行ってから、本プログラムを実行して下さい。", _
-                                            "失敗", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                rtn = False
-                Return rtn
-            End If
-
+            '20261020 ファイルが無い場合、従来は即エラー終了(本体側も中断扱い)となり、ファイルを配置し直しても続行できなかった。
+            '[再試行]で再度ファイル有無を確認し、存在すれば続行、無ければ再度メッセージを表示する。[キャンセル]で従来通り終了する。
+            '20261020 アクセス拒否/読込エラー(他のアプリで開いている場合など)も同様に[再試行]できるようにする。
             '----- 紐付ファイルのオープン処理 -----
             Dim wbook As ClosedXML.Excel.XLWorkbook = Nothing
-            Try
-                wbook = New ClosedXML.Excel.XLWorkbook(relfilepath)
+            Do
+                'ファイル有無の再確認(再試行時にファイルが移動/削除された場合も含む)
+                If File.Exists(relfilepath) = False Then
+                    MsgResult = MessageBox.Show("紐付設定ファイルが存在しません。" & vbCrLf & _
+                                                relfilepath & vbCrLf & vbCrLf & _
+                                                "ファイルを配置してから[再試行]を押して下さい。" & vbCrLf & _
+                                                "[キャンセル]を押すとコンバートを中止します。", _
+                                                "失敗", MessageBoxButtons.RetryCancel, MessageBoxIcon.Exclamation)
+                    If MsgResult <> DialogResult.Retry Then
+                        rtn = False
+                        Return rtn
+                    End If
+                    Continue Do
+                End If
 
-                'アクセス拒否
-            Catch ex As UnauthorizedAccessException
-                MsgResult = MessageBox.Show("セットアップフォルダ内のファイルへのアクセスが拒否されました。" & vbCrLf & _
-                                            "セットアップ先をアクセス権限のあるフォルダに変更して、再度セットアップを行ってから、本プログラムを実行して下さい。", _
-                                            "失敗", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                rtn = False
-                Return rtn
-                'その他の例外
-            Catch ex As Exception
-                MsgResult = MessageBox.Show("紐付設定ファイルの読み込み時にエラーが発生しました。" & vbCrLf & _
-                                            "再度セットアップを行ってから、本プログラムを実行して下さい。", _
-                                            "失敗", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
-                rtn = False
-                Return rtn
-            End Try
+                Try
+                    wbook = New ClosedXML.Excel.XLWorkbook(relfilepath)
+                    Exit Do
+
+                    'アクセス拒否
+                Catch ex As UnauthorizedAccessException
+                    MsgResult = MessageBox.Show("セットアップフォルダ内のファイルへのアクセスが拒否されました。" & vbCrLf & _
+                                                relfilepath & vbCrLf & vbCrLf & _
+                                                "アクセス権限を確認するか、セットアップ先をアクセス権限のあるフォルダに変更してから[再試行]を押して下さい。" & vbCrLf & _
+                                                "[キャンセル]を押すとコンバートを中止します。", _
+                                                "失敗", MessageBoxButtons.RetryCancel, MessageBoxIcon.Exclamation)
+                    If MsgResult <> DialogResult.Retry Then
+                        rtn = False
+                        Return rtn
+                    End If
+                    'その他の例外
+                Catch ex As Exception
+                    MsgResult = MessageBox.Show("紐付設定ファイルの読み込み時にエラーが発生しました。" & vbCrLf & _
+                                                relfilepath & vbCrLf & vbCrLf & _
+                                                "ファイルが他のアプリケーションで開かれている場合は閉じてから[再試行]を押して下さい。" & vbCrLf & _
+                                                "[キャンセル]を押すとコンバートを中止します。" & vbCrLf & vbCrLf & _
+                                                "(" & ex.Message & ")", _
+                                                "失敗", MessageBoxButtons.RetryCancel, MessageBoxIcon.Exclamation)
+                    If MsgResult <> DialogResult.Retry Then
+                        rtn = False
+                        Return rtn
+                    End If
+                End Try
+            Loop
 
             '----- いずれかのシートにデータがあるか確認 -----
             Try
