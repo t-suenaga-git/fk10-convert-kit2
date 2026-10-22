@@ -415,6 +415,7 @@ namespace Converter10
         public const string DIR_RELEXEDIR_NAME = "RelationSetting";                    // 紐付Exe格納先フォルダ名
         public const string DIR_RELEXE_NAME = "RelationSetting.exe";                   // 紐付Exe名
         public const string DIR_FILEDIR_NAME = "File";                                // 中間ファイル等、実行時に必要なファイルの格納先フォルダ名
+        public const string DIR_DELIVERABLES_NAME = "deliverables";                   // 20261022 成果物(ログ・移行結果)格納先フォルダ名。実行毎に日時のサブフォルダを作成する
         public const string DIR_MAINLOG_NAME = "convlog";                             // ログファイル格納先フォルダ名
         public const string DIR_MIDLOG_NAME = "midchklog";                            // 中間ファイルログ格納先フォルダ名
         public const string DIR_MID_NAME = "middlefile";                              // 中間ファイル格納先フォルダ名

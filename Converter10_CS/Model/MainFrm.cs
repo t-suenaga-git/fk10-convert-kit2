@@ -5316,7 +5316,8 @@ namespace Converter10.Njc.Frm
             // パス設定
             // --------------------------------------------------
             // コンバーターログファイルパス
-            string tmp_deflogdirpath = EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_MAINLOG_NAME);
+            // 20261022 ログの保存先を convlog から deliverables へ変更(実行毎に日時のサブフォルダを作成)
+            string tmp_deflogdirpath = EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_DELIVERABLES_NAME);
             txtLogDirPath.Text = tmp_deflogdirpath;
 
 
@@ -5541,7 +5542,8 @@ namespace Converter10.Njc.Frm
             // 中間ファイルログパス
             string tmp_pathstr = "";
             tmp_pathstr = EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_MID_NAME);
-            string tmp_defmidlogdirpath = EtcMethod.Set_Path(tmp_pathstr, CommonModule.DIR_MIDLOG_NAME);
+            // 20261022 中間ファイルチェックログの保存先を middlefile\midchklog から deliverables へ変更(実行毎に日時のサブフォルダを作成)
+            string tmp_defmidlogdirpath = EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_DELIVERABLES_NAME);
             txtMidDirLogPath.Text = tmp_defmidlogdirpath;
             // 中間ファイル関連
             txtMidDirLogPath.BackColor = Color.White;
@@ -6157,14 +6159,14 @@ namespace Converter10.Njc.Frm
             var list_makedir = new List<string>();
 
             // コンバーターフォルダ同階層
-            list_makedir.Add(EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_MAINLOG_NAME));
+            list_makedir.Add(EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_DELIVERABLES_NAME));       // 20261022 convlog→deliverables
             list_makedir.Add(EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_INI_NAME));
             list_makedir.Add(EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_LIST_NAME));
             // 中間ファイルフォルダ
             if (EtcMethod.Chk_DirExist(tmp_middirpath))
             {
                 list_makedir.Add(EtcMethod.Set_Path(tmp_middirpath, CommonModule.DIR_TEMP_CSV));
-                list_makedir.Add(EtcMethod.Set_Path(tmp_middirpath, CommonModule.DIR_MIDLOG_NAME));
+                // 20261022 midchklogはdeliverablesへ移したため自動生成しない
             }
             // 紐付ツールフォルダ
             if (EtcMethod.Chk_DirExist(tmp_reldirpath))
@@ -8455,6 +8457,8 @@ namespace Converter10.Njc.Frm
             var obj_pgb = new ProgressBarManager();
             int rowcnt = 0;
 
+            cvResultRows.Clear();                     // 20261022 移行結果Excel出力用の項目別結果を初期化
+
 
             // --------------------------------------------------
             // ログ/状況出力
@@ -8672,6 +8676,9 @@ namespace Converter10.Njc.Frm
                     string outstr = endkbnstr + " " + totalcntstr + "/" + cvcntstr + "/" + notcvcntstr + "/" + condcntstr;
                     string tmp_sql_itemsta = LogSetting.Get_LogTblInsertQry(LogSetting.Set_LogValue(41, syoriitem, "-", outstr), false);
                     DBExec.Exec_NonQuery(sqlcnnv10, tmp_sql_itemsta, ref rowcnt);
+
+                    // 20261022 移行結果Excel出力用に項目別の結果を保持(画面右下の処理完了項目と同じ内容)
+                    Add_CvResultRow(syoriitem, normalflg, midrowcnt, cvrowcnt, conditioncnt);
 
                     // 状況出力
                     tmp_partsituation = CommonModule.INDENT_1 + Chg_FlgToStr(normalflg, 1) + syoriitem + tmp_str;
@@ -9692,6 +9699,7 @@ namespace Converter10.Njc.Frm
                 string tmp_sql = LogSetting.Get_LogTblSelectQry(true);
                 bool logoutflg = true;
                 string errstr = "";
+                Directory.CreateDirectory(Path.GetDirectoryName(CommonModule.MiddleLogFilePath));     // 20261022 日時サブフォルダの作成
                 logoutflg = FileMethod.TblView_Output_CSV(sqlcnnv10, CommonModule.MiddleLogFilePath, "", "", ref errstr, tmp_sql, true);
                 // ヘッダーを加えて加工
                 if (logoutflg)
@@ -12798,12 +12806,16 @@ namespace Converter10.Njc.Frm
                 tmp_msg = tmp_msg + Constants.vbCrLf + CommonModule.MSG_ERR_DIR_REL;
             }
 
+            // 20261022 日時部分をdeliverables配下のサブフォルダ名にして、その中へログを保存する(フォルダは出力時に作成)。
+            // コンバートログと中間ファイルチェックログで日時が1秒ずれて別フォルダに分かれないよう、日時は1回だけ取得して共用する。
+            string logstamp = Strings.Replace(Strings.Replace(Strings.Replace(string.Format(Conversions.ToString(DateTime.Now)), ":", ""), "/", ""), " ", "");
+
             // ログファイル格納先フォルダ有無確認
             string tmp_logdir = txtLogDirPath.Text;
             if (EtcMethod.Chk_DirExist(tmp_logdir))
             {
-                string logfilename = CommonModule.LOG_TMP_TABLENAME + "_" + Strings.Replace(Strings.Replace(Strings.Replace(string.Format(Conversions.ToString(DateTime.Now)), ":", ""), "/", ""), " ", "") + ".csv";
-                CommonModule.LogFilePath = EtcMethod.Set_Path(tmp_logdir, logfilename);
+                string logfilename = CommonModule.LOG_TMP_TABLENAME + "_" + logstamp + ".csv";
+                CommonModule.LogFilePath = EtcMethod.Set_Path(EtcMethod.Set_Path(tmp_logdir, logstamp), logfilename);
             }
             else
             {
@@ -12841,8 +12853,9 @@ namespace Converter10.Njc.Frm
             string tmp_midlogdir = txtMidDirLogPath.Text;
             if (EtcMethod.Chk_DirExist(tmp_midlogdir))
             {
-                string midlogfilename = CommonModule.LOG_TMP_MIDCHKTABLENAME + "_" + Strings.Replace(Strings.Replace(Strings.Replace(string.Format(Conversions.ToString(DateTime.Now)), ":", ""), "/", ""), " ", "") + ".csv";
-                CommonModule.MiddleLogFilePath = EtcMethod.Set_Path(tmp_midlogdir, midlogfilename);
+                // 20261022 コンバートログと同じ日時(サブフォルダ)を使う
+                string midlogfilename = CommonModule.LOG_TMP_MIDCHKTABLENAME + "_" + logstamp + ".csv";
+                CommonModule.MiddleLogFilePath = EtcMethod.Set_Path(EtcMethod.Set_Path(tmp_midlogdir, logstamp), midlogfilename);
             }
             else
             {
@@ -14007,6 +14020,7 @@ namespace Converter10.Njc.Frm
                 string tmp_sql = LogSetting.Get_LogTblSelectQry(false);
                 bool rtn = true;
                 string errstr = "";
+                Directory.CreateDirectory(Path.GetDirectoryName(CommonModule.LogFilePath));           // 20261022 日時サブフォルダの作成
                 rtn = FileMethod.TblView_Output_CSV(sqlcnnv10, CommonModule.LogFilePath, "", "", ref errstr, tmp_sql, true);
 
                 // ヘッダーを加えて加工
@@ -14020,6 +14034,12 @@ namespace Converter10.Njc.Frm
                 Set_LogHeader(CommonModule.LogFilePath, tmp_header);
                 // 20161104 ログ出力内容修正(開発用以外はテーブル名を表示しない) -chg end
             }
+
+            // 20261022 移行結果(項目別の件数)をログと同じフォルダへCSV出力
+            Write_CvResultCsv(CommonModule.LogFilePath);
+
+            // 20261022 紐付設定ファイルの複製(日時付き)を同じフォルダへ保存。元ファイルはそのまま残す
+            Copy_RelationFileToDeliverables(CommonModule.LogFilePath);
 
             // ログ格納用テーブル削除(DROP)
             if (logdropflg)
