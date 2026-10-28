@@ -138,6 +138,44 @@ namespace Converter10.Njc.Frm
         }
 
         /// <summary>
+        /// コンバートログのあるフォルダ(deliverables\日時)をエクスプローラーで開く。
+        /// </summary>
+        /// <remarks>
+        /// ログファイルが存在する場合は、フォルダを開いてそのファイルを選択状態にする。
+        /// フォルダが存在しない場合は、メッセージを表示する。
+        /// </remarks>
+        private void Open_DeliverablesFolder(string logfilepath)
+        {
+
+            try
+            {
+                string dir = string.IsNullOrEmpty(logfilepath) ? "" : Path.GetDirectoryName(logfilepath);
+
+                if (string.IsNullOrEmpty(dir) || !Directory.Exists(dir))
+                {
+                    MessageBox.Show("ログの出力先フォルダが見つかりません。" + Environment.NewLine + dir,
+                                    "確認", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return;
+                }
+
+                if (File.Exists(logfilepath))
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", "/select,\"" + logfilepath + "\"");
+                }
+                else
+                {
+                    System.Diagnostics.Process.Start("explorer.exe", "\"" + dir + "\"");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("フォルダを開けませんでした。" + Environment.NewLine + ex.Message,
+                                "失敗", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+
+        }
+
+        /// <summary>
         /// CSVの1項目分をエスケープする(カンマ・改行・引用符を含む場合のみ引用符で囲む)
         /// </summary>
         private static string Escape_CsvField(string value)

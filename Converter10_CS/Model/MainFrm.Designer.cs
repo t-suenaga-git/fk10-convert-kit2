@@ -9649,7 +9649,7 @@ namespace Converter10.Njc.Frm
             this.lblDatacvEndDescription1.Name = "lblDatacvEndDescription1";
             this.lblDatacvEndDescription1.Size = new System.Drawing.Size(820, 51);
             this.lblDatacvEndDescription1.TabIndex = 129;
-            this.lblDatacvEndDescription1.Text = "[ログ確認]ボタンよりコンバート結果を確認して下さい。";
+            this.lblDatacvEndDescription1.Text = "[出力先表示]ボタンより、ログなどのコンバート結果を確認して下さい。";
             this.lblDatacvEndDescription1.UseCompatibleTextRendering = true;
             // 
             // lblHDatacvEndLabel
@@ -9716,7 +9716,7 @@ namespace Converter10.Njc.Frm
             this.lblDatacvErrorDescription1.Name = "lblDatacvErrorDescription1";
             this.lblDatacvErrorDescription1.Size = new System.Drawing.Size(820, 51);
             this.lblDatacvErrorDescription1.TabIndex = 134;
-            this.lblDatacvErrorDescription1.Text = "コンバート処理を正常に終了することができませんでした。\r\n[ログ確認]ボタンよりコンバート結果を確認して下さい。";
+            this.lblDatacvErrorDescription1.Text = "コンバート処理を正常に終了することができませんでした。\r\n[出力先表示]ボタンより、ログなどのコンバート結果を確認して下さい。";
             this.lblDatacvErrorDescription1.UseCompatibleTextRendering = true;
             // 
             // GroupBox19

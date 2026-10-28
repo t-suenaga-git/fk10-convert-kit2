@@ -6819,10 +6819,11 @@ namespace Converter10.Njc.Frm
 
                 case "tabPageEndOK":
                 case "tabPageEndCancel":
-                case "tabPageEndError":          // ログを開く [終了, キャンセル, エラー]
+                case "tabPageEndError":          // フォルダを開く [終了, キャンセル, エラー]
                     {
 
-                        Process.Start(CommonModule.LogFilePath);                   // ログファイル表示
+                        // 20261022 ログのほか移行結果・紐付設定ファイルの複製も同じフォルダに出力するため、ログ単体ではなくフォルダを開く
+                        Open_DeliverablesFolder(CommonModule.LogFilePath);
 
                         // --------------------------------------------------
                         // ハッシュ初期化 
@@ -6830,6 +6831,9 @@ namespace Converter10.Njc.Frm
                         // ================================================== コンバータータブ ================================================== -end
 
                         Ini_HashTable();
+
+                        // 20261029 押下後は[作業選択へ]ボタンにフォーカスを移す(押下はしない)
+                        Set_Forcus("end");
                         break;
                     }
 
@@ -12079,7 +12083,7 @@ namespace Converter10.Njc.Frm
                 case "dcend":
                     {
                         btnBack.Text = "";
-                        btnNext.Text = " ログを開く";
+                        btnNext.Text = " 出力先表示";
                         btnEnd.Text = "作業選択へ";
                         btnBack.Visible = false;
                         break;
