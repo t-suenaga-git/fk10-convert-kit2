@@ -206,6 +206,11 @@ Namespace Njc.Frm
             Me.txtLogDirPath.BackColor = Color.White
             Me.txtRelationDirPath.BackColor = Color.White
 
+            '20261029 読込元中間ファイル(middlefile)は使わないため、画面にも表示しない
+            Me.lblMidDir.Visible = False
+            Me.txtMidDirPath.Visible = False
+            Me.btnMidDirSeach.Visible = False
+
         End Sub
 
         ''' <summary>
@@ -4867,14 +4872,8 @@ Namespace Njc.Frm
 
             Dim rtn As Boolean = True
 
-            '読込元中間ファイル有無チェック
-            Dim tmp_middirpath As String = Me.txtMidDirPath.Text
-            If Me.Chk_DirExist(tmp_middirpath) Then
-                MidDirPath = tmp_middirpath
-            Else
-                errdirname = Me.lblMidDir.Text
-                rtn = False
-            End If
+            '20261029 読込元中間ファイル(middlefile)フォルダは実際には使わないため、存在確認はしない(パス情報のみ設定する)
+            MidDirPath = Me.txtMidDirPath.Text
 
             '出力先紐付ファイル有無チェック
             Dim tmp_reldirpath As String = Me.txtRelationDirPath.Text

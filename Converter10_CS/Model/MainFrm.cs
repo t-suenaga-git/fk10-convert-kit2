@@ -6153,7 +6153,6 @@ namespace Converter10.Njc.Frm
             // --------------------------------------------------
             // フォルダ自動生成処理
             // --------------------------------------------------
-            string tmp_middirpath = EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_MID_NAME);             // コンバーター実行ファイル格納フォルダ
             string tmp_reldirpath = EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_RELEXEDIR_NAME);       // 紐付ツール実行ファイル格納フォルダ
             string tmp_gazodirpath = EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_GAZOEXEDIR_NAME);     // 画像CVツール実行ファイル格納フォルダ
             var list_makedir = new List<string>();
@@ -6161,13 +6160,7 @@ namespace Converter10.Njc.Frm
             // コンバーターフォルダ同階層
             list_makedir.Add(EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_DELIVERABLES_NAME));       // 20261022 convlog→deliverables
             list_makedir.Add(EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_INI_NAME));
-            list_makedir.Add(EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_LIST_NAME));
-            // 中間ファイルフォルダ
-            if (EtcMethod.Chk_DirExist(tmp_middirpath))
-            {
-                list_makedir.Add(EtcMethod.Set_Path(tmp_middirpath, CommonModule.DIR_TEMP_CSV));
-                // 20261022 midchklogはdeliverablesへ移したため自動生成しない
-            }
+            // 20261029 listフォルダ(事前作業リスト出力先)・middlefile\csv・middlefile\midchklog は、使用箇所が無い/deliverablesへ移したため自動生成しない
             // 紐付ツールフォルダ
             if (EtcMethod.Chk_DirExist(tmp_reldirpath))
             {
@@ -12829,28 +12822,15 @@ namespace Converter10.Njc.Frm
             // 中間ファイル格納先フォルダ有無確認
             string tmp_existmiddir = EtcMethod.Set_Path(dcv_exedir, CommonModule.DIR_MID_NAME);    // 既存用中間ファイル格納先
 
-            // 既存用中間ファイル格納先有無確認
-            if (EtcMethod.Chk_DirExist(tmp_existmiddir))
-            {
-                CommonModule.MiddleDirPath = tmp_existmiddir;
-            }
-            else
-            {
-                tmp_msg = tmp_msg + Constants.vbCrLf + CommonModule.MSG_ERR_DIR_MID;
-            }
+            // 20261029 middlefileフォルダは(汎用ではPreテーブルから読むため)実際には使わないので、存在確認はしない。
+            // 紐付ツールへ渡すパス情報としてのみ設定する。
+            CommonModule.MiddleDirPath = tmp_existmiddir;
 
-            // 汎用用中間ファイル有無確認
+            // 汎用用中間ファイルパス
             if (CommonModule.CNVNO == (int)CommonModule.ConvertTypes._汎用)
             {
-                if (EtcMethod.Chk_DirExist(tmp_existmiddir))
-                {
-                    CommonModule.BaseMidDirPath = Path.GetDirectoryName(tmp_existmiddir);
-                    CommonModule.CV_FROM_MIDDLE = "preテーブル";
-                }
-                else
-                {
-                    tmp_msg = tmp_msg + Constants.vbCrLf + CommonModule.MSG_ERR_DIR_MID;
-                }
+                CommonModule.BaseMidDirPath = Path.GetDirectoryName(tmp_existmiddir);
+                CommonModule.CV_FROM_MIDDLE = "preテーブル";
             }
 
             // 中間ファイルログ格納先フォルダ有無確認
