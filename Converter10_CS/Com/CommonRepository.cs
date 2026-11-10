@@ -3564,33 +3564,23 @@ namespace Converter10.Njc.Common
         }
 
         /// <summary>
-        /// 文字列中の全角数字(０-９)だけを半角数字(0-9)に変換します。
-        /// 漢字・カタカナ・ひらがな等、数字以外の文字には一切手を加えません。
+        /// 紐付けキーの照合用に、文字列を正規化(Unicode正規化 NFKC)します。
+        /// 全角の英数字・記号(例:２４時間管理費、ＦＦ分解整備料)は半角に、半角カナは全角カナに揃います。
+        /// 漢字・ひらがな・全角カタカナ等は、そのままです。
         /// </summary>
         /// <remarks>
-        /// 20261002 入金項目名の全角半角不一致によるマスタ紐付けエラー対応のため追加。
+        /// 20261002 入金項目名の全角半角不一致によるマスタ紐付けエラー対応のため追加(当初は全角数字のみ)。
+        /// 20261110 全角アルファベット等にも対応するため、NFKC正規化に変更。
+        /// 照合用のキーにだけ使い、移行する値そのものは変更しない。
         /// </remarks>
-        private static string ToHalfWidthDigits(string value)
+        public static string NormalizeForMatch(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
                 return value;
             }
 
-            var sb = new System.Text.StringBuilder(value.Length);
-            foreach (char c in value)
-            {
-                if (c >= '０' && c <= '９')
-                {
-                    sb.Append((char)(c - '０' + '0'));
-                }
-                else
-                {
-                    sb.Append(c);
-                }
-            }
-
-            return sb.ToString();
+            return value.Normalize(System.Text.NormalizationForm.FormKC);
         }
 
         /// <summary>
@@ -3843,9 +3833,11 @@ namespace Converter10.Njc.Common
                     {
                         // 20261002 入金項目名に全角数字(例:２４時間サポート)が含まれていると、
                         // 紐付マスタ(半角数字で登録)とキーが一致せず「マスタデータが存在しない」
-                        // 扱いになっていたため、検索キーの全角数字のみを半角に正規化する。
-                        // (カタカナ・漢字等、数字以外の文字はそのまま)
-                        normalflg = Chk_DataMstExist_RelItem(CommonModule.Hash_Rel_Nkinkomk, ToHalfWidthDigits(value), ref chkvalue, chkkbn, ref errstr);
+                        // 扱いになっていたため、検索キーを正規化して照合する。
+                        // 20261110 全角アルファベット(例:ＦＦ分解整備料)にも対応するため、NFKC正規化に変更。
+                        // また、紐付ファイル側が全角で登録されている場合に備え、紐付けの読込時に正規化したキーも登録している
+                        // (Add_NormalizedKeyAliases)。データと完全に一致するキーがあれば、正規化せずそのキーを使う。
+                        normalflg = Chk_DataMstExist_RelItem(CommonModule.Hash_Rel_Nkinkomk, CommonModule.Hash_Rel_Nkinkomk.ContainsKey(value) ? value : NormalizeForMatch(value), ref chkvalue, chkkbn, ref errstr);
                         break;
                     }
                 case "入金区分":
@@ -9403,9 +9395,33 @@ namespace Converter10.Njc.Common
 
             }
 
+            // 20261110 紐付ファイルの入金項目名に全角の英数字(例:２４時間管理費、ＦＦ分解整備料)が登録されている場合、
+            // 検索側は正規化(半角化等)して照合するため一致しなかった。正規化したキーも同じ値で登録しておく。
+            // 全てのキーを読み込んだあとに追加する(紐付ファイルに明示的に登録されたキーを、別名で上書きしないため)。
+            Add_NormalizedKeyAliases(CommonModule.Hash_Rel_Nkinkomk);
+            Add_NormalizedKeyAliases(CommonModule.Hash_Rel_NkinkomkZksei);
+
             // Excelファイル終了設定
             excelfile.Set_ExcelFile_ReadClose(ref appli, ref wbook, ref wsheet);
 
+        }
+
+        /// <summary>
+        /// 登録済みの全てのキーについて、正規化(NFKC)した結果が元と異なる場合、正規化したキーも同じ値で登録する。
+        /// </summary>
+        /// <remarks>
+        /// 20261110 追加。入金項目名の全角の英数字(例:２４時間管理費、ＦＦ分解整備料)による、紐付けの不一致対策。
+        /// </remarks>
+        public static void Add_NormalizedKeyAliases(SafeDictionary<string, string> hash)
+        {
+            foreach (var key in new List<string>(hash.Keys))
+            {
+                string aliaskey = DataChk.NormalizeForMatch(key);
+                if (aliaskey != key && hash.ContainsKey(aliaskey) == false)
+                {
+                    hash.Add(aliaskey, hash[key]);
+                }
+            }
         }
 
         /// <summary>
