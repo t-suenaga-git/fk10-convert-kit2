@@ -1355,6 +1355,9 @@ namespace Converter10.Njc.Repository
                 string tmp_sql = "";
                 int tmpcnt = 0;
 
+                // 20261110 契約者名(nvarchar(200))・カナ(varchar(100))を、口座名義(varchar(100))・口座名義カナ(varchar(50))へコピーする際、
+                // 長い名前があると文字列切り捨てエラー(8152)でINSERT全体が失敗し、ダミー口座が1件も作成されなかった。
+                // バイト数で切り詰める CONVERT(varchar(n),…) を使う(全角文字の途中では切れない。LEFTは文字数で数えるため使わない)。
                 // ①契約者口座No = 1 のデータを作成する
                 tmp_sql = tmp_sql + " INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg) ";
                 tmp_sql = tmp_sql + " SELECT ";
@@ -1365,8 +1368,8 @@ namespace Converter10.Njc.Repository
                 tmp_sql = tmp_sql + " 	,NULL AS kinyu_tenno ";
                 tmp_sql = tmp_sql + " 	,1 AS koza_syubetu ";
                 tmp_sql = tmp_sql + " 	,NULL AS koza_bango ";
-                tmp_sql = tmp_sql + " 	,kys_name AS koza_meigi ";
-                tmp_sql = tmp_sql + " 	,kys_kana AS koza_meigikana ";
+                tmp_sql = tmp_sql + " 	,CONVERT(varchar(100),kys_name) AS koza_meigi ";
+                tmp_sql = tmp_sql + " 	,CONVERT(varchar(50),kys_kana) AS koza_meigikana ";
                 tmp_sql = tmp_sql + " 	,'' AS yucyokoza_kigo1 ";
                 tmp_sql = tmp_sql + " 	,'' AS yucyokoza_kigo2 ";
                 tmp_sql = tmp_sql + " 	,'' AS yucyokoza_bango ";
@@ -1394,8 +1397,8 @@ namespace Converter10.Njc.Repository
                 tmp_sql = tmp_sql + " 	,NULL AS kinyu_tenno ";
                 tmp_sql = tmp_sql + " 	,1 AS koza_syubetu ";
                 tmp_sql = tmp_sql + " 	,NULL AS koza_bango ";
-                tmp_sql = tmp_sql + " 	,kys_name AS koza_meigi ";
-                tmp_sql = tmp_sql + " 	,kys_kana AS koza_meigikana ";
+                tmp_sql = tmp_sql + " 	,CONVERT(varchar(100),kys_name) AS koza_meigi ";
+                tmp_sql = tmp_sql + " 	,CONVERT(varchar(50),kys_kana) AS koza_meigikana ";
                 tmp_sql = tmp_sql + " 	,'' AS yucyokoza_kigo1 ";
                 tmp_sql = tmp_sql + " 	,'' AS yucyokoza_kigo2 ";
                 tmp_sql = tmp_sql + " 	,'' AS yucyokoza_bango ";
