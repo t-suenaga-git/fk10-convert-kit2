@@ -134,6 +134,7 @@ namespace Converter10.Njc.Model
         public string Vari_History { get; set; }
         public string Vari_Rowid { get; set; }
         public string Vari_Koza_printkbn { get; set; }
+        public string Vari_Useflg { get; set; }          // 20261112 fk8db_20260917で追加された列
 
     }
 

@@ -1033,6 +1033,7 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata_koza','history','家主口座情報','履歴','','-1','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata_koza','rowid','家主口座情報','行ID','','16','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata_koza','koza_printkbn','家主口座情報','家主向け帳票の表示','1','2','1','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata_koza','useflg','家主口座情報','検索対象フラグ','0','1','1','','','','fk8db_20260917で追加された列。家主基本情報と同じく1を設定'); ");     // 20261112 追加
                         break;
                     }
                 case "家主情報-家主イベント情報":

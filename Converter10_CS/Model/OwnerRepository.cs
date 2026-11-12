@@ -1293,7 +1293,7 @@ namespace Converter10.Njc.Repository
                 // テーブル名/フィールド名セット
                 string tblname_base = "owdata";
                 string tblname = "owdata_koza";
-                string fldnamegrp = "ow_no,ow_kozano,kinyu_no,kinyu_tenno,koza_syubetu," + "koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2," + "yucyokoza_bango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no," + "sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai," + "history,rowid,koza_printkbn";
+                string fldnamegrp = "ow_no,ow_kozano,kinyu_no,kinyu_tenno,koza_syubetu," + "koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2," + "yucyokoza_bango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no," + "sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai," + "history,rowid,koza_printkbn," + "useflg";     // 20261112 useflg追加(fk8db_20260917で追加された列。家主基本情報と同じく1を設定)
 
 
 
@@ -1478,6 +1478,7 @@ namespace Converter10.Njc.Repository
                     // 固定値
                     model_cvitem.Vari_History = CommonModule.DefHistory;
                     model_cvitem.Vari_Rowid = Guid.NewGuid().ToString();     // GUID
+                    model_cvitem.Vari_Useflg = 1.ToString();                 // 20261112 useflgを設定(家主基本情報と同じ)
 
                     // フィールド名と移行値を紐付→作業用ハッシュテーブル格納
                     tmp_hash = GetHashFldToValue.Get_Hash_fldvalue(fldnamegrp, model_cvitem);
