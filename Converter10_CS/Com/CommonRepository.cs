@@ -8843,6 +8843,13 @@ namespace Converter10.Njc.Common
             // 初期値設定
             flg = true;
 
+            // 20261113 fk8db_20260917で追加された列のうち、賃貸革命が既定で値を入れる列の固定値を付加する
+            var newcoldefaults = Get_NewColDefaults(tblname, fldname, hash_cvitem);
+            if (newcoldefaults.Count > 0)
+            {
+                fldname = fldname + "," + string.Join(",", newcoldefaults.Keys);
+            }
+
             // パラメータ生成
             string repprm = Get_Parameter(fldname);
 
@@ -8856,7 +8863,7 @@ namespace Converter10.Njc.Common
             // DB挿入値取得
             for (int cntjj = 0, loopTo = Information.UBound(tmp_fld); cntjj <= loopTo; cntjj++)
             {
-                string cv_value = Conversions.ToString(hash_cvitem[tmp_fld[cntjj]]);
+                string cv_value = newcoldefaults.ContainsKey(tmp_fld[cntjj]) ? newcoldefaults[tmp_fld[cntjj]] : Conversions.ToString(hash_cvitem[tmp_fld[cntjj]]);
                 SqlComAdd(tmpsqlcom, Interaction.IIf(string.IsNullOrEmpty(cv_value), DBNull.Value, cv_value), tblname + "-" + tmp_fld[cntjj], "@" + tmp_fld[cntjj]);
             }
 
@@ -8899,6 +8906,88 @@ namespace Converter10.Njc.Common
                 tmpsqlcom.Dispose();
             }
 
+        }
+
+        /// <summary>
+        /// 新スキーマ(fk8db_20260917)で追加された列の固定値定義
+        /// </summary>
+        private class NewColDefault
+        {
+            public string Col;           // 列名
+            public string Value;         // 固定値
+            public string WhenNotEmpty;  // 空でない場合のみ設定する(移行項目の列名)。常に設定する場合は空
+            public NewColDefault(string col, string value, string whennotempty = "")
+            {
+                Col = col;
+                Value = value;
+                WhenNotEmpty = whennotempty;
+            }
+        }
+
+        /// <summary>
+        /// 20261113 新スキーマ(fk8db_20260917)で追加された列のうち、賃貸革命の画面から最小登録した際に
+        /// アプリが値を入れる列の固定値(区分・フラグ類)。値はアプリで登録した結果(fk8db_sample)と同じにしている。
+        /// ・アプリが空文字を入れる列は、このツールが空文字をNULLとして書き込む既存の仕様に合わせるため定義していない。
+        /// ・移行項目として挿入する列に既に含まれている列は、この定義では上書きしない。
+        /// </summary>
+        private static readonly Dictionary<string, NewColDefault[]> NewColDefaultDefs = new Dictionary<string, NewColDefault[]>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "owdata", new[] {
+                new NewColDefault("dky_dairiflg", "0"), new NewColDefault("dky_sendkbn", "1"), new NewColDefault("dky_useflg", "0"),
+                new NewColDefault("send_report_kbn", "1"), new NewColDefault("tax_gykbn", "1") } },
+            { "owdata_koza", new[] {
+                new NewColDefault("sgfirai_tesukoteizeikbn", "-1", "sgfirai_kbn") } },
+            { "bkdata_detail", new[] {
+                new NewColDefault("horei_suigaihazardmapkozui", "-1"), new NewColDefault("horei_suigaihazardmapsyozaitizumenumu", "0"),
+                new NewColDefault("horei_suigaihazardmaptakasio", "-1"), new NewColDefault("horei_suigaihazardmapusui", "-1"),
+                new NewColDefault("tatemonojokyo_toiawase1flg", "0"), new NewColDefault("tatemonojokyo_toiawase2flg", "0"),
+                new NewColDefault("tatemonojokyo_toiawase3flg", "0"), new NewColDefault("tatemonojokyo_toiawase4flg", "0"),
+                new NewColDefault("tatemonojokyo_tyousaflg", "-1") } },
+            { "hydata_detail", new[] {
+                new NewColDefault("fkaetesuryo_kbn", "-1"), new NewColDefault("pint_kusitu_taisyoflg", "0"), new NewColDefault("tuden_taisyoflg", "0") } },
+            { "kydata_kihon", new[] {
+                new NewColDefault("autocreating_flg", "0"), new NewColDefault("sqsofu_ptn", "0"), new NewColDefault("tiensongaikin_flg", "0") } },
+            { "kysdata", new[] {
+                new NewColDefault("dky_sendkbn", "1"), new NewColDefault("dky_useflg", "1"), new NewColDefault("fkaesq_rulekbn", "1"),
+                new NewColDefault("fkomsq_rulekbn", "1"), new NewColDefault("tokusokusq_rulekbn", "1") } },
+            { "kysdata_koza", new[] {
+                new NewColDefault("fkae_tesuzeikbn", "1"), new NewColDefault("sgfirai_tesukoteizeikbn", "-1", "sgfirai_kbn") } },
+            { "sorule", new[] {
+                new NewColDefault("hyteigaku_hiwarikbn", "1"), new NewColDefault("kanritesu_makesq", "0"), new NewColDefault("kanritesu_sqnkbnyotei", "-1"),
+                new NewColDefault("kanritesu_sqtukikbn", "-1"), new NewColDefault("no_sorulekbn", "1"), new NewColDefault("pint_importflg", "0"),
+                new NewColDefault("pint_kojosqkbn", "1"), new NewColDefault("pint_kojotukikbn", "-1"), new NewColDefault("pint_sqnkbnyotei", "-1"),
+                new NewColDefault("pint_sqtukikbn", "-1"), new NewColDefault("sokininterval_flg", "0"), new NewColDefault("sokininterval_kbn", "-1"),
+                new NewColDefault("tiensongaikin_sokinflg", "0") } },
+            { "sqdata", new[] {
+                new NewColDefault("invoicesq_flg", "0"), new NewColDefault("kanrigak_rit", "0"), new NewColDefault("pint_importflg", "0"),
+                new NewColDefault("sq_siwake_flg", "0"), new NewColDefault("tatekaeseisan_flg", "0") } },
+        };
+
+        /// <summary>
+        /// 挿入対象テーブルに応じて、新スキーマで追加された列の固定値(列名→値)を取得する
+        /// </summary>
+        private static Dictionary<string, string> Get_NewColDefaults(string tblname, string fldname, SafeDictionary<string, string> hash_cvitem)
+        {
+            var rtn = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            if (!NewColDefaultDefs.TryGetValue(tblname ?? "", out var defs))
+            {
+                return rtn;
+            }
+
+            var existflds = new HashSet<string>(fldname.Split(','), StringComparer.OrdinalIgnoreCase);
+            foreach (var def in defs)
+            {
+                if (existflds.Contains(def.Col))
+                {
+                    continue;
+                }
+                if (!string.IsNullOrEmpty(def.WhenNotEmpty) && string.IsNullOrEmpty(hash_cvitem[def.WhenNotEmpty]))
+                {
+                    continue;
+                }
+                rtn[def.Col] = def.Value;
+            }
+            return rtn;
         }
 
         /// <summary>

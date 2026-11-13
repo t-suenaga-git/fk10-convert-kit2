@@ -1359,7 +1359,7 @@ namespace Converter10.Njc.Repository
                 // 長い名前があると文字列切り捨てエラー(8152)でINSERT全体が失敗し、ダミー口座が1件も作成されなかった。
                 // バイト数で切り詰める CONVERT(varchar(n),…) を使う(全角文字の途中では切れない。LEFTは文字数で数えるため使わない)。
                 // ①契約者口座No = 1 のデータを作成する
-                tmp_sql = tmp_sql + " INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg) ";
+                tmp_sql = tmp_sql + " INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg,fkae_tesuzeikbn,sgfirai_tesukoteizeikbn) ";
                 tmp_sql = tmp_sql + " SELECT ";
                 tmp_sql = tmp_sql + " 	 kys_no ";
                 tmp_sql = tmp_sql + " 	,1 AS kys_kozano ";
@@ -1387,6 +1387,8 @@ namespace Converter10.Njc.Repository
                 tmp_sql = tmp_sql + " 	,'' AS biko_sgfirai ";
                 tmp_sql = tmp_sql + " 	,1 AS koza_printkbn ";
                 tmp_sql = tmp_sql + " 	,0 AS koza_yucyoflg ";
+                tmp_sql = tmp_sql + " 	,1 AS fkae_tesuzeikbn ";                    // 20261113 fk8db_20260917で追加された列。アプリの既定値
+                tmp_sql = tmp_sql + " 	,-1 AS sgfirai_tesukoteizeikbn ";
                 tmp_sql = tmp_sql + " FROM kysdata WHERE kys_no NOT IN (SELECT kys_no FROM kysdata_koza WHERE kys_kozano = 1) ";
                 tmp_sql = tmp_sql + " UNION ";
                 tmp_sql = tmp_sql + " SELECT ";
@@ -1416,6 +1418,8 @@ namespace Converter10.Njc.Repository
                 tmp_sql = tmp_sql + " 	,'' AS biko_sgfirai ";
                 tmp_sql = tmp_sql + " 	,1 AS koza_printkbn ";
                 tmp_sql = tmp_sql + " 	,0 AS koza_yucyoflg ";
+                tmp_sql = tmp_sql + " 	,1 AS fkae_tesuzeikbn ";                    // 20261113 fk8db_20260917で追加された列。アプリの既定値
+                tmp_sql = tmp_sql + " 	,-1 AS sgfirai_tesukoteizeikbn ";
                 tmp_sql = tmp_sql + " FROM kysdata WHERE kys_no NOT IN (SELECT kys_no FROM kysdata_koza) ";
                 DBExec.Exec_NonQuery(sqlcnnv10, tmp_sql, ref tmpcnt);
                 tmp_sql = "";
@@ -1479,18 +1483,18 @@ namespace Converter10.Njc.Repository
                 tmp_sql = tmp_sql + " 			/*最大口座No = 1 かつ 最大口座数 = 1 の場合は口座No = 2、3を作成*/ ";
                 tmp_sql = tmp_sql + " 			IF @maxkozano = 1 AND @maxkozacnt = 1 ";
                 tmp_sql = tmp_sql + " 				BEGIN ";
-                tmp_sql = tmp_sql + " 					INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg) VALUES (@kysno,2,2,NULL,NULL,1,NULL,'','','','','',NULL,0.00,'','','',1,NULL,2,1,NULL,NULL,'',1,0) ";
-                tmp_sql = tmp_sql + " 					INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg) VALUES (@kysno,3,3,NULL,NULL,1,NULL,'','','','','',NULL,0.00,'','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0) ";
+                tmp_sql = tmp_sql + " 					INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg,fkae_tesuzeikbn,sgfirai_tesukoteizeikbn) VALUES (@kysno,2,2,NULL,NULL,1,NULL,'','','','','',NULL,0.00,'','','',1,NULL,2,1,NULL,NULL,'',1,0,1,-1) ";
+                tmp_sql = tmp_sql + " 					INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg,fkae_tesuzeikbn,sgfirai_tesukoteizeikbn) VALUES (@kysno,3,3,NULL,NULL,1,NULL,'','','','','',NULL,0.00,'','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,1,NULL) ";
                 tmp_sql = tmp_sql + " 			END ";
                 tmp_sql = tmp_sql + " 			/*最大口座No = 2 かつ 最大口座数 = 2 の場合は口座No = 3を作成*/ ";
                 tmp_sql = tmp_sql + " 			IF @maxkozano = 2 AND @maxkozacnt = 2 ";
                 tmp_sql = tmp_sql + " 				BEGIN ";
-                tmp_sql = tmp_sql + " 					INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg) VALUES (@kysno,3,3,NULL,NULL,1,NULL,'','','','','',NULL,0.00,'','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0) ";
+                tmp_sql = tmp_sql + " 					INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg,fkae_tesuzeikbn,sgfirai_tesukoteizeikbn) VALUES (@kysno,3,3,NULL,NULL,1,NULL,'','','','','',NULL,0.00,'','','',NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,0,1,NULL) ";
                 tmp_sql = tmp_sql + " 			END ";
                 tmp_sql = tmp_sql + " 			/*最大口座No = 3 かつ 最大口座数 = 2 の場合は口座No = 2を作成*/ ";
                 tmp_sql = tmp_sql + " 			IF @maxkozano = 3 AND @maxkozacnt = 2 ";
                 tmp_sql = tmp_sql + " 				BEGIN ";
-                tmp_sql = tmp_sql + " 					INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg) VALUES (@kysno,2,2,NULL,NULL,1,NULL,'','','','','',NULL,0.00,'','','',1,NULL,2,1,NULL,NULL,'',1,0) ";
+                tmp_sql = tmp_sql + " 					INSERT INTO kysdata_koza (kys_no,kys_kozano,koza_kbn,kinyu_no,kinyu_tenno,koza_syubetu,koza_bango,koza_meigi,koza_meigikana,yucyokoza_kigo1,yucyokoza_kigo2,yucyokoza_bango,fkae_no,fkae_tesugak,fkae_kysbango,biko_koza,biko_furikomi,sgfirai_kbn,sgfirai_no,sgfirai_tesufutankbn,sgfirai_tesukeisankbn,sgfirai_tesukotei1gak,sgfirai_tesukotei2gak,biko_sgfirai,koza_printkbn,koza_yucyoflg,fkae_tesuzeikbn,sgfirai_tesukoteizeikbn) VALUES (@kysno,2,2,NULL,NULL,1,NULL,'','','','','',NULL,0.00,'','','',1,NULL,2,1,NULL,NULL,'',1,0,1,-1) ";
                 tmp_sql = tmp_sql + " 			END ";
                 tmp_sql = tmp_sql + "  ";
                 tmp_sql = tmp_sql + " 			FETCH NEXT FROM KysInfo ";
