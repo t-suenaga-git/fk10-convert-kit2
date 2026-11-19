@@ -8644,6 +8644,13 @@ namespace Converter10.Njc.Common
                         break;
                     }
 
+                case 44: // Preテーブルの列不足(インボイス登録番号・課税区分など)  20261116 追加
+                    {
+                        tmp_logitem[1] = CommonModule.LOG_RUI_TYUUI;
+                        tmp_logitem[2] = CommonModule.LOG_SYU_PRESCHEMA;
+                        break;
+                    }
+
                 case 99: // 中断
                     {
                         tmp_logitem[1] = CommonModule.LOG_RUI_RIREKI;

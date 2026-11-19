@@ -7279,6 +7279,9 @@ namespace Converter10.Njc.Frm
             {
                 try
                 {
+                    // 20261116 Preテーブルに足りない列を、ApplicationDbContext(EF)を作る前に確認・追加する -add sta
+                    CheckPreTableSchema(string.IsNullOrWhiteSpace(pre_table_connection_string.Text) ? sqlcnnv10.ConnectionString : pre_table_connection_string.Text);
+                    // 20261116 Preテーブルに足りない列を、ApplicationDbContext(EF)を作る前に確認・追加する -add end
                     if (string.IsNullOrWhiteSpace(pre_table_connection_string.Text))
                     {
                         MainFrmHelper.db = new ApplicationDbContext(sqlcnnv10.ConnectionString);
@@ -8242,6 +8245,9 @@ namespace Converter10.Njc.Frm
             // ログ出力
             string tmp_sql_sta = LogSetting.Get_LogTblInsertQry(LogSetting.Set_LogValue(1, CommonModule.LOG_SYORIKOMK_CV_STA), false);
             DBExec.Exec_NonQuery(sqlcnnv10, tmp_sql_sta, ref rowcnt);
+            // 20261116 Preテーブルの列が足りないまま続行した場合は、ログへ出力する -add sta
+            WritePreTableSchemaLog();
+            // 20261116 Preテーブルの列が足りないまま続行した場合は、ログへ出力する -add end
             // 状況出力
             // 20161018 UI最終確認での修正 -add sta
             // 進捗状況出力内容初期化
