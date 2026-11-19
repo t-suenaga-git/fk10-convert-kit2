@@ -8934,7 +8934,9 @@ namespace Converter10.Njc.Common
         {
             { "owdata", new[] {
                 new NewColDefault("dky_dairiflg", "0"), new NewColDefault("dky_sendkbn", "1"), new NewColDefault("dky_useflg", "0"),
-                new NewColDefault("send_report_kbn", "1"), new NewColDefault("tax_gykbn", "1") } },
+                // 20261116 tax_gykbn(課税区分)は、中間ファイルの移行項目(家主基本情報の「課税区分」)から入れるようにしたため、固定値から外した -chg sta
+                new NewColDefault("send_report_kbn", "1") } },
+                // 20261116 tax_gykbn(課税区分)は、中間ファイルの移行項目(家主基本情報の「課税区分」)から入れるようにしたため、固定値から外した -chg end
             { "owdata_koza", new[] {
                 new NewColDefault("sgfirai_tesukoteizeikbn", "-1", "sgfirai_kbn") } },
             { "bkdata_detail", new[] {

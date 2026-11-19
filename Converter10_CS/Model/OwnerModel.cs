@@ -101,6 +101,8 @@ namespace Converter10.Njc.Model
         public string Vari_Kaikei_jouhou { get; set; }
         public string Vari_Addr1 { get; set; }            // 20160622 EXEUpdateに伴う修正 (家主住所移行仕様変更) -add
         public string Vari_Addr2 { get; set; }            // 20160622 EXEUpdateに伴う修正 (家主住所移行仕様変更) -add
+        public string Vari_Invoice_bango { get; set; }
+        public string Vari_Tax_gykbn { get; set; }
 
     }
 

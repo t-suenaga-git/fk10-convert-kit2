@@ -80,7 +80,7 @@ namespace Converter10.Njc.Repository
                 // '20161021 既存中間ファイルを無くすことによる速度改善処理_共通_データ取得処理 -chg end
                 // テーブル名/フィールド名セット
                 string tblname = "gydata_fudo";
-                string fldnamegrp = "gy_fudono,gy_fudoname,gy_fudonamesjis,gy_fudokana,post_code," + "addr_kenno,addr_sino,addr_cyo,addr_cyome,addr_cyomeptn," + "addr_banti,addr_etc,tel1,tel2,fax," + "mobiletel1,mobiletel2,daihyo_yakusyoku,daihyo_name,tanto_busyoyakusyoku," + "tanto_name,tanto_namesjis,tanto_kana,mail,mobilemail," + "url,yusentel_kbn,yusenmail_kbn,biko_kihon,sofu_hakkofurikomi," + "menkyo_bango,menkyo_ymd,syunin_bango,syunin_name,kanrikyokai_bango," + "keieikanrisi_bango,keieikanrisi_name,kanrigy_bango,useflg,history," + "rowid,daihyo_namesjis,syunin_namesjis,tanto_autoinputflg,keieikanrisi_namesjis";
+                string fldnamegrp = "gy_fudono,gy_fudoname,gy_fudonamesjis,gy_fudokana,post_code," + "addr_kenno,addr_sino,addr_cyo,addr_cyome,addr_cyomeptn," + "addr_banti,addr_etc,tel1,tel2,fax," + "mobiletel1,mobiletel2,daihyo_yakusyoku,daihyo_name,tanto_busyoyakusyoku," + "tanto_name,tanto_namesjis,tanto_kana,mail,mobilemail," + "url,yusentel_kbn,yusenmail_kbn,biko_kihon,sofu_hakkofurikomi," + "menkyo_bango,menkyo_ymd,syunin_bango,syunin_name,kanrikyokai_bango," + "keieikanrisi_bango,keieikanrisi_name,kanrigy_bango,useflg,history," + "rowid,daihyo_namesjis,syunin_namesjis,tanto_autoinputflg,keieikanrisi_namesjis,invoice_bango,tax_gykbn";
 
 
 
@@ -153,6 +153,18 @@ namespace Converter10.Njc.Repository
                         // 各項目値→変数格納
                         switch (fldname ?? "")
                         {
+                            // 20261116 インボイス登録番号・課税区分の追加 -add sta
+                            case "インボイス登録番号":
+                                {
+                                    model_cvitem.Vari_Invoice_bango = fldvalue.Trim();
+                                    break;
+                                }
+                            case "課税区分":
+                                {
+                                    model_cvitem.Vari_Tax_gykbn = fldvalue.Trim();
+                                    break;
+                                }
+                            // 20261116 インボイス登録番号・課税区分の追加 -add end
                             case "業者No":
                                 {
                                     model_cvitem.Vari_Gy_fudono = fldvalue.Trim();
@@ -4277,7 +4289,7 @@ namespace Converter10.Njc.Repository
                 // '20161021 既存中間ファイルを無くすことによる速度改善処理_共通_データ取得処理 -chg end
                 // テーブル名/フィールド名セット
                 string tblname = "gydata_szen";
-                string fldnamegrp = "gy_szenno,gy_szenname,gy_szennamesjis,gy_szenkana,post_code," + "addr1,addr2,tel1,tel2,fax," + "mobiletel1,mobiletel2,daihyo_yakusyoku,daihyo_name,tanto_busyoyakusyoku," + "tanto_name,tanto_namesjis,tanto_kana,mail,mobilemail," + "url,yusentel_kbn,yusenmail_kbn,biko_kihon,useflg," + "history,rowid,daihyo_namesjis";
+                string fldnamegrp = "gy_szenno,gy_szenname,gy_szennamesjis,gy_szenkana,post_code," + "addr1,addr2,tel1,tel2,fax," + "mobiletel1,mobiletel2,daihyo_yakusyoku,daihyo_name,tanto_busyoyakusyoku," + "tanto_name,tanto_namesjis,tanto_kana,mail,mobilemail," + "url,yusentel_kbn,yusenmail_kbn,biko_kihon,useflg," + "history,rowid,daihyo_namesjis,invoice_bango,tax_gykbn";
 
 
 
@@ -4345,6 +4357,18 @@ namespace Converter10.Njc.Repository
                         // 各項目値→変数格納
                         switch (fldname ?? "")
                         {
+                            // 20261116 インボイス登録番号・課税区分の追加 -add sta
+                            case "インボイス登録番号":
+                                {
+                                    model_cvitem.Vari_Invoice_bango = fldvalue.Trim();
+                                    break;
+                                }
+                            case "課税区分":
+                                {
+                                    model_cvitem.Vari_Tax_gykbn = fldvalue.Trim();
+                                    break;
+                                }
+                            // 20261116 インボイス登録番号・課税区分の追加 -add end
                             case "業者No":
                                 {
                                     model_cvitem.Vari_Gy_szenno = fldvalue.Trim();
@@ -5574,7 +5598,7 @@ namespace Converter10.Njc.Repository
                 // '20161021 既存中間ファイルを無くすことによる速度改善処理_共通_データ取得処理 -chg end
                 // テーブル名/フィールド名セット
                 string tblname = "gydata_lifeline";
-                string fldnamegrp = "gy_lifelineno,gy_lifelinename,gy_lifelinenamesjis,gy_lifelinekana,eigyosyo," + "eigyosyosjis,post_code,addr1,addr2,tel1," + "tel2,fax,mobiletel1,mobiletel2,yusentel_kbn," + "biko_kihon,useflg,history,rowid,lifeline_denkiflg," + "lifeline_josuidoflg,lifeline_gasflg,lifeline_toyuflg,lifeline_other1flg,lifeline_haisuiflg";
+                string fldnamegrp = "gy_lifelineno,gy_lifelinename,gy_lifelinenamesjis,gy_lifelinekana,eigyosyo," + "eigyosyosjis,post_code,addr1,addr2,tel1," + "tel2,fax,mobiletel1,mobiletel2,yusentel_kbn," + "biko_kihon,useflg,history,rowid,lifeline_denkiflg," + "lifeline_josuidoflg,lifeline_gasflg,lifeline_toyuflg,lifeline_other1flg,lifeline_haisuiflg,invoice_bango,tax_gykbn";
 
 
 
@@ -5642,6 +5666,18 @@ namespace Converter10.Njc.Repository
                         // 各項目値→変数格納
                         switch (fldname ?? "")
                         {
+                            // 20261116 インボイス登録番号・課税区分の追加 -add sta
+                            case "インボイス登録番号":
+                                {
+                                    model_cvitem.Vari_Invoice_bango = fldvalue.Trim();
+                                    break;
+                                }
+                            case "課税区分":
+                                {
+                                    model_cvitem.Vari_Tax_gykbn = fldvalue.Trim();
+                                    break;
+                                }
+                            // 20261116 インボイス登録番号・課税区分の追加 -add end
                             case "ライフライン業者No":
                                 {
                                     model_cvitem.Vari_Gy_lifelineno = fldvalue.Trim();
@@ -6386,7 +6422,7 @@ namespace Converter10.Njc.Repository
                 // '20161021 既存中間ファイルを無くすことによる速度改善処理_共通_データ取得処理 -chg end
                 // テーブル名/フィールド名セット
                 string tblname = "gydata_sisetu";
-                string fldnamegrp = "gy_sisetuno,gy_sisetuname,gy_sisetunamesjis,gy_sisetukana,eigyosyo," + "eigyosyosjis,post_code,addr1,addr2,tel1," + "tel2,fax,mobiletel1,mobiletel2,tanto_busyoyakusyoku," + "tanto_name,tanto_namesjis,tanto_kana,mail,mobilemail," + "url,yusentel_kbn,yusenmail_kbn,biko_kihon,useflg," + "history,rowid";
+                string fldnamegrp = "gy_sisetuno,gy_sisetuname,gy_sisetunamesjis,gy_sisetukana,eigyosyo," + "eigyosyosjis,post_code,addr1,addr2,tel1," + "tel2,fax,mobiletel1,mobiletel2,tanto_busyoyakusyoku," + "tanto_name,tanto_namesjis,tanto_kana,mail,mobilemail," + "url,yusentel_kbn,yusenmail_kbn,biko_kihon,useflg," + "history,rowid,invoice_bango,tax_gykbn";
 
 
 
@@ -6454,6 +6490,18 @@ namespace Converter10.Njc.Repository
                         // 各項目値→変数格納
                         switch (fldname ?? "")
                         {
+                            // 20261116 インボイス登録番号・課税区分の追加 -add sta
+                            case "インボイス登録番号":
+                                {
+                                    model_cvitem.Vari_Invoice_bango = fldvalue.Trim();
+                                    break;
+                                }
+                            case "課税区分":
+                                {
+                                    model_cvitem.Vari_Tax_gykbn = fldvalue.Trim();
+                                    break;
+                                }
+                            // 20261116 インボイス登録番号・課税区分の追加 -add end
                             case "施設保守業者No":
                                 {
                                     model_cvitem.Vari_Gy_sisetuno = fldvalue.Trim();

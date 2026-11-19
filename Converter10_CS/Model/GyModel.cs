@@ -52,6 +52,8 @@ namespace Converter10.Njc.Model
         public string Vari_Syunin_namesjis { get; set; }
         public string Vari_Tanto_autoinputflg { get; set; }
         public string Vari_Keieikanrisi_namesjis { get; set; }
+        public string Vari_Invoice_bango { get; set; }
+        public string Vari_Tax_gykbn { get; set; }
 
     }
 
@@ -291,6 +293,8 @@ namespace Converter10.Njc.Model
         public string Vari_History { get; set; }
         public string Vari_Rowid { get; set; }
         public string Vari_Daihyo_namesjis { get; set; }
+        public string Vari_Invoice_bango { get; set; }
+        public string Vari_Tax_gykbn { get; set; }
 
     }
 
@@ -371,6 +375,8 @@ namespace Converter10.Njc.Model
         public string Vari_Lifeline_toyuflg { get; set; }
         public string Vari_Lifeline_other1flg { get; set; }
         public string Vari_Lifeline_haisuiflg { get; set; }
+        public string Vari_Invoice_bango { get; set; }
+        public string Vari_Tax_gykbn { get; set; }
 
     }
 
@@ -445,6 +451,8 @@ namespace Converter10.Njc.Model
         public string Vari_Useflg { get; set; }
         public string Vari_History { get; set; }
         public string Vari_Rowid { get; set; }
+        public string Vari_Invoice_bango { get; set; }
+        public string Vari_Tax_gykbn { get; set; }
 
     }
 

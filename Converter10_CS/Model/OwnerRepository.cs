@@ -81,7 +81,7 @@ namespace Converter10.Njc.Repository
                 // テーブル名/フィールド名セット
                 string tblname = "owdata";
                 // 20160622 EXEUpdateに伴う修正 (家主住所移行仕様変更) -add (kaikei_jouhou,addr1,addr2を追加 ※kaikei_jouhouがもともと入っていなかったため同時に追加する)
-                string fldnamegrp = "ow_no,kojinhojin_flg,ow_name,ow_namesjis,ow_kana," + "keisyo,post_code,addr_kenno,addr_sino,addr_cyo," + "addr_cyome,addr_cyomeptn,addr_banti,addr_etc,toukiaddr1," + "toukiaddr2,tel1,tel2,fax,mobiletel1," + "mobiletel2,mail,mobilemail,yusentel_kbn,yusenmail_kbn," + "birthday,nensyu,biko_kihon,gender,honseki," + "kinmu_name,kinmu_namesjis,kinmu_kana,kinmu_postcode,kinmu_addr1," + "kinmu_addr2,kinmu_tel1,kinmu_tel2,kinmu_fax,kinmu_gyosyu," + "kinmu_busyo,kinmu_nyuryokuym,kinmu_nyusyaym,url,gyosyu," + "daihyo_name,daihyo_namesjis,daihyo_kana,daihyo_yakusyoku,daihyo_atenaflg," + "tanto_name,tanto_namesjis,tanto_kana,tanto_busyo,tanto_atenaflg," + "sihonkin,jugyosu,nyuryoku_ym,torihikisaki,renraku_name," + "renraku_namesjis,renraku_kana,renraku_keisyo,renraku_postcode,renraku_addr1," + "renraku_addr2,renraku_tel1,renraku_tel2,renraku_fax,renraku_mobiletel1," + "renraku_mobiletel2,renraku_yusentelkbn,renraku_aidagara,biko_renraku,sofu_kbn," + "sofu_name,sofu_namesjis,sofu_kana,sofu_keisyo,sofu_postcode," + "sofu_addr1,sofu_addr2,sofu_tel1,sofu_tel2,sofu_fax," + "biko_sofu,event_tantono,useflg,findkeyword,history," + "rowid,kaikei_jouhou,addr1,addr2";
+                string fldnamegrp = "ow_no,kojinhojin_flg,ow_name,ow_namesjis,ow_kana," + "keisyo,post_code,addr_kenno,addr_sino,addr_cyo," + "addr_cyome,addr_cyomeptn,addr_banti,addr_etc,toukiaddr1," + "toukiaddr2,tel1,tel2,fax,mobiletel1," + "mobiletel2,mail,mobilemail,yusentel_kbn,yusenmail_kbn," + "birthday,nensyu,biko_kihon,gender,honseki," + "kinmu_name,kinmu_namesjis,kinmu_kana,kinmu_postcode,kinmu_addr1," + "kinmu_addr2,kinmu_tel1,kinmu_tel2,kinmu_fax,kinmu_gyosyu," + "kinmu_busyo,kinmu_nyuryokuym,kinmu_nyusyaym,url,gyosyu," + "daihyo_name,daihyo_namesjis,daihyo_kana,daihyo_yakusyoku,daihyo_atenaflg," + "tanto_name,tanto_namesjis,tanto_kana,tanto_busyo,tanto_atenaflg," + "sihonkin,jugyosu,nyuryoku_ym,torihikisaki,renraku_name," + "renraku_namesjis,renraku_kana,renraku_keisyo,renraku_postcode,renraku_addr1," + "renraku_addr2,renraku_tel1,renraku_tel2,renraku_fax,renraku_mobiletel1," + "renraku_mobiletel2,renraku_yusentelkbn,renraku_aidagara,biko_renraku,sofu_kbn," + "sofu_name,sofu_namesjis,sofu_kana,sofu_keisyo,sofu_postcode," + "sofu_addr1,sofu_addr2,sofu_tel1,sofu_tel2,sofu_fax," + "biko_sofu,event_tantono,useflg,findkeyword,history," + "rowid,kaikei_jouhou,addr1,addr2,invoice_bango,tax_gykbn";
 
 
 
@@ -162,6 +162,18 @@ namespace Converter10.Njc.Repository
                         // 各項目値→変数格納
                         switch (fldname ?? "")
                         {
+                            // 20261116 インボイス登録番号・課税区分の追加 -add sta
+                            case "インボイス登録番号":
+                                {
+                                    model_cvitem.Vari_Invoice_bango = fldvalue.Trim();
+                                    break;
+                                }
+                            case "課税区分":
+                                {
+                                    model_cvitem.Vari_Tax_gykbn = fldvalue.Trim();
+                                    break;
+                                }
+                            // 20261116 インボイス登録番号・課税区分の追加 -add end
                             case "家主No":
                                 {
                                     model_cvitem.Vari_Ow_no = fldvalue.Trim();

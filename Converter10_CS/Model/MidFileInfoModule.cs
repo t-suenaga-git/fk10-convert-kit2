@@ -152,6 +152,8 @@ namespace Converter10
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('家主情報','家主基本情報','イベント担当者No','','','','','','int','1','99999','','','','担当者','×');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('家主情報','家主基本情報','絞り込みキーワード','','','','','','varchar','','100','','','','','×');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('家主情報','家主基本情報','会計情報','','','','','','varchar','','20','','','','','×');");
+            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('家主情報','家主基本情報','インボイス登録番号','中間ファイル','家主情報','インボイス登録番号','','●','varchar','','20','','','','','●');");
+            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('家主情報','家主基本情報','課税区分','中間ファイル','家主情報','課税区分','','●','smallint','1','3','1','','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('家主情報','家主イベント情報','年賀状','中間ファイル','家主情報','年賀状','','●','int','-1','6','-1','','','','×');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('家主情報','家主イベント情報','暑中お見舞い','中間ファイル','家主情報','暑中お見舞い','','●','int','-1','6','-1','','','','×');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('家主情報','家主イベント情報','誕生日','中間ファイル','家主情報','誕生日','','●','int','-1','6','-1','','','','×');");
@@ -267,6 +269,8 @@ namespace Converter10
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','仲介業者基本情報','取引主任者名(SJIS)','','','','','','varchar','','100','','','','','×');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','仲介業者基本情報','仲介業者契約担当者自動入力フラグ','','','','','','smallint','0','1','0','','','','×');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','仲介業者基本情報','賃貸不動産経営管理士名(SJIS)','','','','','','varchar','','100','','','','','×');");
+            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','仲介業者基本情報','インボイス登録番号','中間ファイル','仲介業者情報','インボイス登録番号','','●','varchar','','20','','','','','●');");
+            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','仲介業者基本情報','課税区分','中間ファイル','仲介業者情報','課税区分','','●','smallint','1','3','1','','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','仲介業者口座情報','金融機関No','中間ファイル','仲介業者情報','金融機関No','','●','smallint','1','9999','','','','金融機関','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','仲介業者口座情報','金融機関支店No','中間ファイル','仲介業者情報','金融機関支店No','','●','smallint','1','9999','','','','金融機関支店','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','仲介業者口座情報','口座種別','中間ファイル','仲介業者情報','口座種別','','●','任意文字','1','-1',' ','','','口座種別','●');");
@@ -525,6 +529,8 @@ namespace Converter10
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','修繕業者基本情報','優先設定(メールアドレス)','中間ファイル','修繕業者情報','優先設定(メールアドレス)','','●','smallint','1','11','1','','','','×');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','修繕業者基本情報','備考(基本情報)','中間ファイル','修繕業者情報','備考(基本情報)','','●','varchar','','100','','','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','修繕業者基本情報','代表者名(SJIS)','','','','','','varchar','','100','','','','','×');");
+            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','修繕業者基本情報','インボイス登録番号','中間ファイル','修繕業者情報','インボイス登録番号','','●','varchar','','20','','','','','●');");
+            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','修繕業者基本情報','課税区分','中間ファイル','修繕業者情報','課税区分','','●','smallint','1','3','1','','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','修繕業者口座情報','金融機関No','中間ファイル','修繕業者情報','金融機関No','','●','smallint','1','9999','','','','金融機関','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','修繕業者口座情報','金融機関店No','中間ファイル','修繕業者情報','金融機関店No','','●','smallint','1','9999','','','','金融機関支店','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','修繕業者口座情報','口座種別','中間ファイル','修繕業者情報','口座種別','','●','任意文字','1','-1',' ','','','口座種別','●');");
@@ -615,6 +621,8 @@ namespace Converter10
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','ライフライン業者情報','灯油','中間ファイル','ライフライン業者情報','灯油','','●','smallint','0','1','0','','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','ライフライン業者情報','その他','中間ファイル','ライフライン業者情報','その他','','●','smallint','0','1','0','','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','ライフライン業者情報','排水','中間ファイル','ライフライン業者情報','排水','','●','smallint','0','1','0','','','','●');");
+            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','ライフライン業者情報','インボイス登録番号','中間ファイル','ライフライン業者情報','インボイス登録番号','','●','varchar','','20','','','','','●');");
+            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','ライフライン業者情報','課税区分','中間ファイル','ライフライン業者情報','課税区分','','●','smallint','1','3','1','','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','施工業者情報','施工業者No','中間ファイル','施工業者情報','施工業者No','','●','int','1','999999','','1','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','施工業者情報','施工業者名','中間ファイル','施工業者情報','施工業者名','','●','nvarchar','','200','','','●','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','施工業者情報','施工業者名(Shift-jis)','','','','','','varchar','','100','','','','','×');");
@@ -663,6 +671,8 @@ namespace Converter10
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','施設保守業者情報','優先設定(電話番号)','中間ファイル','施設保守業者情報','優先設定(電話番号)','','●','smallint','0','12','1','','','','×');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','施設保守業者情報','優先設定(メールアドレス)','中間ファイル','施設保守業者情報','優先設定(メールアドレス)','','●','smallint','0','11','1','','','','×');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','施設保守業者情報','備考(基本情報)','中間ファイル','施設保守業者情報','備考(基本情報)','','●','varchar','','100','','','','','●');");
+            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','施設保守業者情報','インボイス登録番号','中間ファイル','施設保守業者情報','インボイス登録番号','','●','varchar','','20','','','','','●');");
+            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('業者情報','施設保守業者情報','課税区分','中間ファイル','施設保守業者情報','課税区分','','●','smallint','1','3','1','','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('自社情報','自社基本情報','自社・支店No','中間ファイル','自社情報','自社・支店No','','●','int','1','999999','','1','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('自社情報','自社メモ情報','自社・支店No','中間ファイル','自社情報','自社・支店No','','●','int','1','999999','','1','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('自社情報','自社基本情報','自社・支店名','中間ファイル','自社情報','自社・支店名','','●','nvarchar','','200','','','●','','●');");

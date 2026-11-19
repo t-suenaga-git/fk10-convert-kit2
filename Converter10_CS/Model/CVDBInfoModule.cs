@@ -324,6 +324,8 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_fudo','syunin_namesjis','仲介業者基本情報','取引主任者名(SJIS)','','100','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_fudo','tanto_autoinputflg','仲介業者基本情報','仲介業者契約担当者自動入力フラグ','0','1','0','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_fudo','keieikanrisi_namesjis','仲介業者基本情報','賃貸不動産経営管理士名(SJIS)','','100','','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_fudo','invoice_bango','仲介業者基本情報','インボイス登録番号','','20','','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_fudo','tax_gykbn','仲介業者基本情報','課税区分','1','3','1','','','','1:未確認 2:課税事業者 3:免税事業者'); ");
                         break;
                     }
                 case "業者情報-仲介業者口座情報":
@@ -486,6 +488,8 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_szen','history','修繕業者基本情報','履歴','','-1','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_szen','rowid','修繕業者基本情報','付箋Guid','','16','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_szen','daihyo_namesjis','修繕業者基本情報','代表者名(SJIS)','','100','','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_szen','invoice_bango','修繕業者基本情報','インボイス登録番号','','20','','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_szen','tax_gykbn','修繕業者基本情報','課税区分','1','3','1','','','','1:未確認 2:課税事業者 3:免税事業者'); ");
                         break;
                     }
                 case "業者情報-修繕業者口座情報":
@@ -548,6 +552,8 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_lifeline','lifeline_toyuflg','ライフライン業者情報','灯油','0','1','0','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_lifeline','lifeline_other1flg','ライフライン業者情報','その他','0','1','0','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_lifeline','lifeline_haisuiflg','ライフライン業者情報','排水','0','1','0','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_lifeline','invoice_bango','ライフライン業者情報','インボイス登録番号','','20','','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_lifeline','tax_gykbn','ライフライン業者情報','課税区分','1','3','1','','','','1:未確認 2:課税事業者 3:免税事業者'); ");
                         break;
                     }
                 case "業者情報-施工業者情報":
@@ -610,6 +616,8 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_sisetu','useflg','施設保守業者情報','検索対象フラグ','0','1','1','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_sisetu','history','施設保守業者情報','履歴','','-1','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_sisetu','rowid','施設保守業者情報','付箋Guid','','16','','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_sisetu','invoice_bango','施設保守業者情報','インボイス登録番号','','20','','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('gydata_sisetu','tax_gykbn','施設保守業者情報','課税区分','1','3','1','','','','1:未確認 2:課税事業者 3:免税事業者'); ");
                         break;
                     }
 
@@ -996,6 +1004,8 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata','biko_sofu','家主基本情報','送付先備考','','100','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata','event_tantono','家主基本情報','イベント担当者No','1','99999','','','','担当者',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata','useflg','家主基本情報','検索対象フラグ','0','1','1','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata','invoice_bango','家主基本情報','インボイス登録番号','','20','','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata','tax_gykbn','家主基本情報','課税区分','1','3','1','','','','1:未確認 2:課税事業者 3:免税事業者'); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata','findkeyword','家主基本情報','絞り込みキーワード','','100','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata','history','家主基本情報','履歴','','-1','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('owdata','rowid','家主基本情報','付箋Guid','','16','','','','',''); ");

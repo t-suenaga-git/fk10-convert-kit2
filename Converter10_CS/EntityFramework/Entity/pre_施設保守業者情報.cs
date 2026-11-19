@@ -48,5 +48,11 @@ namespace Converter10.EntityFramework.Entity
         public string url { get; set; }
 
         public string biko_kihon { get; set; }
+
+        // 20261116 インボイス登録番号・課税区分の追加 -add sta
+        public string invoice_bango { get; set; }
+
+        public string tax_gykbn { get; set; }
+        // 20261116 インボイス登録番号・課税区分の追加 -add end
     }
 }
