@@ -47,8 +47,15 @@ Converter10.sln
 - `MainFrm` は部分クラスで、機能ごとにファイルを分けている：
   - `MainFrm.cs` … 本体（画面制御・コンバート処理）
   - `MainFrm.PreTableConnection.cs` … Pre テーブル接続情報の入力・保存（`ini\coninfo_10.xml`）
+  - `MainFrm.PreTableSchema.cs` … 接続確認のときに、Pre テーブルに足りない列を確認して追加する（`PreTableSchema.cs` の `AddedColumns` を使う）
   - `MainFrm.CvResult.cs` … 移行結果 CSV の出力、紐付設定ファイルの複製、出力先フォルダを開く処理
 - 移行のしくみ：Pre テーブル（EF）→ `CVTBL_*` → 移行先の本番テーブル。移行先は**新スキーマ（`fk8db_20260917`）のみ**に対応（旧スキーマには対応しない）。
+- **Pre テーブルに列を追加するときは、次の 3 か所を同時に直す。** 直したら `powershell -ExecutionPolicy Bypass -File tools\Check-PreSchema.ps1` で、ずれがないことを確認する。
+  1. `Sql\01_AdjustDataQuery作成準備.Sql`（配布物に同梱する CREATE 文。新しい列は `NOT NULL DEFAULT ''`。先頭のバージョン表記も更新する）
+  2. `EntityFramework\Entity\pre_*.cs`（EF エンティティ）
+  3. `Model\PreTableSchema.cs` の `AddedColumns`（旧形式の Pre テーブルに、接続確認のときに列を追加するための一覧。追加したバージョンも書く）
+  - あわせて、中間ファイル側（`MainFrmHelper.cs` の紐付け表、`MidFileInfoModule.cs`）、移行先側（`CVDBInfoModule.cs`、モデルとリポジトリ）も直す。
+  - 旧形式の Pre テーブル（列が足りない）でも、EF は列がないものを無視して動く（値は空）。ただし、EF のモデルはプロセスの中で最初に作ったものを使い回すので、列の追加は必ず `ApplicationDbContext` を作る前に行う。
 
 ### 実行時の出力・設定
 

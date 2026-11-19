@@ -106,6 +106,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <!-- 20261116 pre_ テーブル作成クエリを、配布物(出力先の Sql フォルダ)に含める -->
+    <None Update="Sql\*.Sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="EntityFramework.ja">
       <Version>6.2.0</Version>
     </PackageReference>
