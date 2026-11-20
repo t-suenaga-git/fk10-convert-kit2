@@ -55,6 +55,7 @@ namespace Converter10.Njc.Model
         public string Vari_Hyteigaku_kbn { get; set; }
         public string Vari_Hyteigaku_kanrigak { get; set; }
         public string Vari_Hyteigaku_hiwariflg { get; set; }
+        public string Vari_Hyteigaku_hiwarikbn { get; set; }
         public string Vari_Bkteigaku_kanrigak { get; set; }
         public string Vari_Kanri_taxflg { get; set; }
         public string Vari_Biko_basic { get; set; }

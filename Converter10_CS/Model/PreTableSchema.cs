@@ -53,6 +53,9 @@ namespace Converter10.Njc.Frm
             new AddedColumn("pre_ライフライン業者情報", "tax_gykbn", "varchar(max)", "1.1.0.0"),
             new AddedColumn("pre_施設保守業者情報", "invoice_bango", "varchar(max)", "1.1.0.0"),
             new AddedColumn("pre_施設保守業者情報", "tax_gykbn", "varchar(max)", "1.1.0.0"),
+            // 1.2.0.0 部屋毎定額の日割り(比率計算)の設定
+            new AddedColumn("pre_物件管理情報", "hyteigaku_hiwariflg", "varchar(max)", "1.2.0.0"),
+            new AddedColumn("pre_物件管理情報", "hyteigaku_hiwarikbn", "varchar(max)", "1.2.0.0"),
         };
 
         /// <summary>

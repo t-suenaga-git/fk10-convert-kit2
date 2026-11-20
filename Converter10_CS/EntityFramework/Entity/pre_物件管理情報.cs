@@ -60,5 +60,11 @@ namespace Converter10.EntityFramework.Entity
         public string no_soruleflg { get; set; }
 
         public string cyukai_zuijisokin { get; set; }
+
+        // 20261120 部屋毎定額の日割り(比率計算)の設定の追加 -add sta
+        public string hyteigaku_hiwariflg { get; set; }
+
+        public string hyteigaku_hiwarikbn { get; set; }
+        // 20261120 部屋毎定額の日割り(比率計算)の設定の追加 -add end
     }
 }

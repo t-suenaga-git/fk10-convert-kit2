@@ -8962,7 +8962,7 @@ namespace Converter10.Njc.Common
             { "kysdata_koza", new[] {
                 new NewColDefault("fkae_tesuzeikbn", "1"), new NewColDefault("sgfirai_tesukoteizeikbn", "-1", "sgfirai_kbn") } },
             { "sorule", new[] {
-                new NewColDefault("hyteigaku_hiwarikbn", "1"), new NewColDefault("kanritesu_makesq", "0"), new NewColDefault("kanritesu_sqnkbnyotei", "-1"),
+                new NewColDefault("kanritesu_makesq", "0"), new NewColDefault("kanritesu_sqnkbnyotei", "-1"),
                 new NewColDefault("kanritesu_sqtukikbn", "-1"), new NewColDefault("no_sorulekbn", "1"), new NewColDefault("pint_importflg", "0"),
                 new NewColDefault("pint_kojosqkbn", "1"), new NewColDefault("pint_kojotukikbn", "-1"), new NewColDefault("pint_sqnkbnyotei", "-1"),
                 new NewColDefault("pint_sqtukikbn", "-1"), new NewColDefault("sokininterval_flg", "0"), new NewColDefault("sokininterval_kbn", "-1"),

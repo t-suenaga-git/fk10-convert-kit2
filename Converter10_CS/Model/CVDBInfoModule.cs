@@ -1982,6 +1982,7 @@ namespace Converter10
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('sorule','hyteigaku_kbn','送金ルール基本情報','管理手数料定額区分','0','0','','','','','画面上での設定箇所が不明のためとりあえず0を設定しておく(管理手数料区分と内容が似ているので統一された？)'); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('sorule','hyteigaku_kanrigak','送金ルール基本情報','部屋毎定額 - 全部屋一律管理手数料','0','99999999999','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('sorule','hyteigaku_hiwariflg','送金ルール基本情報','部屋毎定額 - 部屋毎日割りフラグ','0','1','0','','','',''); ");
+                        rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('sorule','hyteigaku_hiwarikbn','送金ルール基本情報','部屋毎定額 - 比率計算の基準区分','-1','2','1','','','','1:金額 2:日数 -1:未定義'); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('sorule','bkteigaku_kanrigak','送金ルール基本情報','物件毎定額 - 物件管理手数料','0','99999999999','','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('sorule','kanri_taxflg','送金ルール基本情報','管理手数料 消費税適用フラグ','0','1','1','','','',''); ");
                         rtn_qry.Append(" INSERT INTO " + CVDBINFO_DBNAME + " VALUES ('sorule','biko_basic','送金ルール基本情報','備考 - 基本情報','','200','','','','',''); ");

@@ -1,11 +1,13 @@
 -- pre_ テーブル作成クエリ(汎用コンバートキット2 に同梱)
--- 対応ツール: 汎用コンバートキット2 ver 1.1.0.0
+-- 対応ツール: 汎用コンバートキット2 ver 1.2.0.0
 -- 更新履歴:
+--   ver 1.2.0.0: pre_物件管理情報 に、hyteigaku_hiwariflg(部屋毎定額 - 管理手数料を比率計算する 0/1)、
+--           hyteigaku_hiwarikbn(部屋毎定額 - 比率計算の基準 1:金額 2:日数 -1:未定義)を追加
 --   ver 1.1.0.0: pre_家主情報、pre_仲介業者情報、pre_修繕業者情報、pre_ライフライン業者情報、pre_施設保守業者情報 に、
 --           invoice_bango(インボイス登録番号)、tax_gykbn(課税区分 1:未確認 2:課税事業者 3:免税事業者)を追加
 -- 注意: 実行すると、pre_ テーブルを削除して作り直すため、中のデータは消えます。
 --       新しい列は NOT NULL DEFAULT '' です(新しい列を指定しない既存のINSERTも、そのまま動きます)。
-PRINT N'pre_ テーブル作成: 汎用コンバートキット2 ver 1.1.0.0 対応';
+PRINT N'pre_ テーブル作成: 汎用コンバートキット2 ver 1.2.0.0 対応';
 
 IF OBJECT_ID(N'[dbo].[pre_物件鍵タイトルマスタ]', N'U') IS NOT NULL
 Begin
@@ -1173,7 +1175,9 @@ CREATE TABLE [dbo].[pre_物件管理情報](
 	[biko_basic] [varchar](max) NOT NULL,
 	[kanritesu_zeiumukbn] [varchar](max) NOT NULL,
 	[no_soruleflg] [varchar](max) NOT NULL,
-	[cyukai_zuijisokin] [varchar](max) NOT NULL
+	[cyukai_zuijisokin] [varchar](max) NOT NULL,
+	[hyteigaku_hiwariflg] [varchar](max) NOT NULL CONSTRAINT [DF_pre_物件管理情報_hyteigaku_hiwariflg] DEFAULT '',
+	[hyteigaku_hiwarikbn] [varchar](max) NOT NULL CONSTRAINT [DF_pre_物件管理情報_hyteigaku_hiwarikbn] DEFAULT ''
 );
 
 IF OBJECT_ID(N'[dbo].[pre_物件管理送金先情報]', N'U') IS NOT NULL

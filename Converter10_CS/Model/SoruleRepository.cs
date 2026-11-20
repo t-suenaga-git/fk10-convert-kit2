@@ -71,7 +71,7 @@ namespace Converter10.Njc.Repository
 
                 // テーブル名/フィールド名セット
                 string tblname = "sorule";
-                string fldnamegrp = "sorule_guid,sorule_no,relation_guid,kubunsyo,sorule_startymd," + "sorule_endymd,kanri_keitaikbn,ikkatu_kanriflg,cyukai_kyflg,cyukai_koflg," + "cyukai_kaiflg,soymd1_gaitoukbn,soymd1_simekbn,soymd1_sokintukikbn,soymd1_sokinsimekbn," + "soymd2_gaitoukbn,soymd2_simekbn,soymd2_sokintukikbn,soymd2_sokinsimekbn,soymd3_gaitoukbn," + "soymd3_simekbn,soymd3_sokintukikbn,soymd3_sokinsimekbn,soymd4_gaitoukbn,soymd4_simekbn," + "soymd4_sokintukikbn,soymd4_sokinsimekbn,soymd5_gaitoukbn,soymd5_simekbn,soymd5_sokintukikbn," + "soymd5_sokinsimekbn,sosaki_multikbn,sosaki_koteiflg,sosaki_koteisu,sosaki_anbunflg," + "sosaki_hasuuketorisaki,sosaki_hasuadjustmentflg,ikkatu_kbn,ikkatu_bkgak,ikkatu_menseki," + "ikkatu_mensekimonth,kanritesu_kbn,kanritesu_cyosyukbn,kanri_reigaiky,kanri_reigaikai," + "hyteigaku_kbn,hyteigaku_kanrigak,hyteigaku_hiwariflg,bkteigaku_kanrigak,kanri_taxflg," + "biko_basic,sh_daihyohyflg,sh_kozabetuflg,sh_kozabetuListNokbn,hyikkatu_nkin_no1kbn," + "hyikkatu_nkin_no2kbn,hyikkatu_nkin_no3kbn,hyikkatu_nkin_no4kbn,hyikkatu_nkin_no5kbn,kanritesu_zeiumukbn," + "history,rowid,no_soruleflg,cyukai_zuijisokin,ikkatu_calckbn," + "ikkatu_taxflg,kanri_utizeiflg,soymd_basis";
+                string fldnamegrp = "sorule_guid,sorule_no,relation_guid,kubunsyo,sorule_startymd," + "sorule_endymd,kanri_keitaikbn,ikkatu_kanriflg,cyukai_kyflg,cyukai_koflg," + "cyukai_kaiflg,soymd1_gaitoukbn,soymd1_simekbn,soymd1_sokintukikbn,soymd1_sokinsimekbn," + "soymd2_gaitoukbn,soymd2_simekbn,soymd2_sokintukikbn,soymd2_sokinsimekbn,soymd3_gaitoukbn," + "soymd3_simekbn,soymd3_sokintukikbn,soymd3_sokinsimekbn,soymd4_gaitoukbn,soymd4_simekbn," + "soymd4_sokintukikbn,soymd4_sokinsimekbn,soymd5_gaitoukbn,soymd5_simekbn,soymd5_sokintukikbn," + "soymd5_sokinsimekbn,sosaki_multikbn,sosaki_koteiflg,sosaki_koteisu,sosaki_anbunflg," + "sosaki_hasuuketorisaki,sosaki_hasuadjustmentflg,ikkatu_kbn,ikkatu_bkgak,ikkatu_menseki," + "ikkatu_mensekimonth,kanritesu_kbn,kanritesu_cyosyukbn,kanri_reigaiky,kanri_reigaikai," + "hyteigaku_kbn,hyteigaku_kanrigak,hyteigaku_hiwariflg,hyteigaku_hiwarikbn,bkteigaku_kanrigak,kanri_taxflg," + "biko_basic,sh_daihyohyflg,sh_kozabetuflg,sh_kozabetuListNokbn,hyikkatu_nkin_no1kbn," + "hyikkatu_nkin_no2kbn,hyikkatu_nkin_no3kbn,hyikkatu_nkin_no4kbn,hyikkatu_nkin_no5kbn,kanritesu_zeiumukbn," + "history,rowid,no_soruleflg,cyukai_zuijisokin,ikkatu_calckbn," + "ikkatu_taxflg,kanri_utizeiflg,soymd_basis";
 
 
 
@@ -387,6 +387,13 @@ namespace Converter10.Njc.Repository
                                     model_cvitem.Vari_Hyteigaku_hiwariflg = fldvalue.Trim();
                                     break;
                                 }
+                            // 20261120 部屋毎定額の日割り(比率計算)の設定の追加 -add sta
+                            case "部屋毎定額 - 比率計算の基準区分":
+                                {
+                                    model_cvitem.Vari_Hyteigaku_hiwarikbn = fldvalue.Trim();
+                                    break;
+                                }
+                            // 20261120 部屋毎定額の日割り(比率計算)の設定の追加 -add end
                             case "物件毎定額 - 物件管理手数料":
                                 {
                                     model_cvitem.Vari_Bkteigaku_kanrigak = fldvalue.Trim();

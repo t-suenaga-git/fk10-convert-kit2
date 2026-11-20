@@ -55,6 +55,8 @@ Converter10.sln
   2. `EntityFramework\Entity\pre_*.cs`（EF エンティティ）
   3. `Model\PreTableSchema.cs` の `AddedColumns`（旧形式の Pre テーブルに、接続確認のときに列を追加するための一覧。追加したバージョンも書く）
   - あわせて、中間ファイル側（`MainFrmHelper.cs` の紐付け表、`MidFileInfoModule.cs`）、移行先側（`CVDBInfoModule.cs`、モデルとリポジトリ）も直す。
+  - **`MidFileInfoModule.cs` の行の右端「移行対象フラグ」は、必ず `●` にする。** `×` だと、Pre テーブルの値が中間テーブルにコピーされない（コピーする項目を探す SQL が `移行対象フラグ = '●'` で絞っているため）。紐付け表に Pre の列を書いていても、無言で空になる。
+    - 既存の `×` の項目は、意図して外している可能性があるので、勝手に `●` へ変えない（移行対象にすると決めたものだけ変える）。
   - 旧形式の Pre テーブル（列が足りない）でも、EF は列がないものを無視して動く（値は空）。ただし、EF のモデルはプロセスの中で最初に作ったものを使い回すので、列の追加は必ず `ApplicationDbContext` を作る前に行う。
 
 ### 実行時の出力・設定
