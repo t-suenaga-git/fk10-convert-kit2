@@ -52,7 +52,7 @@ Module RelationModule
 
     'Public Const MSG_ERR_SET_EXISTRELDATA As String = "が変更された可能性があるため前回設定値を復元できません。" & vbCrLf & "再度紐付設定を行って下さい。"        '20160622 前回設定値復元処理修正
     'Public Const MSG_ADD_SET_EXISTRELDATA As String = "に新たに追加された項目が存在します。" & vbCrLf & "新規に追加された項目の紐付設定を行って下さい。" & vbCrLf & "※現在構築中のため初期状態を読込みます。"          '20160622 前回設定値復元処理修正
-    Public Const MSG_ERR_EXISTRELDATAREAD As String = "以下の紐付項目については、賃貸革命V7と前回の紐付設定の内容が異なる為、復元できません。" & vbCrLf & "(前回の紐付設定時から、賃貸革命V7の設定値が変更されている可能性があります)"        '20160622 前回設定値復元処理修正
+    Public Const MSG_ERR_EXISTRELDATAREAD As String = "以下の紐付項目については、コンバート元データと前回の紐付設定の内容が異なる為、復元できません。" & vbCrLf & "(前回の紐付設定時から、コンバート元データが変更されている可能性があります)"        '20160622 前回設定値復元処理修正    '20261120 メッセージ内の「賃貸革命V7」を「コンバート元データ」に修正 -chg
 
     Public Const MSG_CHK_BLANK_REQ As String = "以下の項目で紐付け未設定の箇所が存在します。" & vbCrLf & "全項目について紐付設定を行って下さい。"      '20160705 未設定項目に関するメッセージ表示機能の追加 -chg '20160905 未設定項目がある場合のダイアログ修正 -chg
     Public Const MSG_CHK_BLANK_NOTREQ As String = "以下の項目で紐付未設定の箇所が存在します。" & vbCrLf & "紐付けされていない項目は新規に登録されますがよろしいですか？"      '20160705 未設定項目に関するメッセージ表示機能の追加 -chg '20160905 未設定項目がある場合のダイアログ修正 -chg
