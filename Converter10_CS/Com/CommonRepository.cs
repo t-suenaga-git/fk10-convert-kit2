@@ -2124,7 +2124,8 @@ namespace Converter10.Njc.Common
 
             // コードを取得
             var tmp_list = new List<string>();
-            string tmp_sql = " SELECT area_no FROM m_area WHERE area_name = '" + value + "'";
+            // 20261124 値に「'」が含まれていてもSQLエラーにならないようにエスケープする -chg
+            string tmp_sql = " SELECT area_no FROM m_area WHERE area_name = '" + (value ?? "").Replace("'", "''") + "'";
             bool flg = true;
             bool rtn = true;
 
@@ -2136,6 +2137,14 @@ namespace Converter10.Njc.Common
             // 20160530 ログ修正 -add end
 
             flg = DBExec.Exec_DataReader_Col_List(tmp_sql, ref sqlcnnv10, ref tmp_list);
+
+            // 20261124 エリア名で見つからず、値が数値のときは、エリアNoとして照合する(中間ファイルの仕様は、エリアNo(数値)) -add sta
+            if (tmp_list.Count == 0 && int.TryParse(value.Trim(), out int tmp_areano))
+            {
+                tmp_sql = " SELECT area_no FROM m_area WHERE area_no = " + tmp_areano.ToString();
+                flg = DBExec.Exec_DataReader_Col_List(tmp_sql, ref sqlcnnv10, ref tmp_list);
+            }
+            // 20261124 エリア名で見つからず、値が数値のときは、エリアNoとして照合する(中間ファイルの仕様は、エリアNo(数値)) -add end
 
             if (tmp_list.Count != 0)
             {
