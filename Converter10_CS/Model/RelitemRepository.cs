@@ -590,6 +590,64 @@ namespace Converter10.Njc.Repository
     public class M_nkin_Repository
     {
 
+
+        // 20261124 入金項目マスタ(m_nkin)の登録で、名称が列の長さを超えるときの切り詰め処理を追加 -add sta
+        /// <summary>
+        /// 列の長さ(バイト数)を取得する。取得できない(列がない・varchar(max)等)ときは、既定値を返す。
+        /// </summary>
+        private static int Get_ColLength(SqlConnection sqlcnnv10, string tblname, string colname, int defvalue)
+        {
+            try
+            {
+                using (var cmd = new SqlCommand("SELECT COL_LENGTH('" + tblname + "', '" + colname + "')", sqlcnnv10))
+                {
+                    object v = cmd.ExecuteScalar();
+                    if (v != null && !(v is DBNull))
+                    {
+                        int len = Convert.ToInt32(v);
+                        if (len > 0)
+                        {
+                            return len;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // 取得に失敗しても、既定値で処理を続ける
+            }
+            return defvalue;
+        }
+
+        /// <summary>
+        /// 入金項目の文字列を、列の長さ(バイト数)で切り詰める。切り詰めたときは、コンバートログに注意を出す。
+        /// </summary>
+        private static string Cut_NkinText(SqlConnection sqlcnnv10, string nkinno, string itemname, string value, int maxlen)
+        {
+            string after = "";
+            string errstr = "";
+            if (DataChk.Chk_DataString(value, ref after, maxlen, 0, ref errstr) || string.IsNullOrEmpty(errstr))
+            {
+                return after;
+            }
+
+            try
+            {
+                // errstr は「処理結果内容-不備原因-対処方法」の形
+                string[] tmp_log = errstr.Split('-');
+                string logvalue = LogSetting.Set_LogValue(42, "入金項目マスタ", itemname, tmp_log[0], "入金項目No = " + nkinno,
+                    tmp_log.Length > 1 ? tmp_log[1] : "-", tmp_log.Length > 2 ? tmp_log[2] : "-", value, after, "m_nkin");
+                int tmp_cnt = 0;
+                DBExec.Exec_NonQuery(sqlcnnv10, LogSetting.Get_LogTblInsertQry(logvalue, false), ref tmp_cnt);
+            }
+            catch
+            {
+                // ログ出力に失敗しても、登録処理を優先する
+            }
+            return after;
+        }
+        // 20261124 入金項目マスタ(m_nkin)の登録で、名称が列の長さを超えるときの切り詰め処理を追加 -add end
+
         /// <summary>
         /// 入金項目マスタ移行処理
         /// </summary>
@@ -627,6 +685,10 @@ namespace Converter10.Njc.Repository
             var list_existdata = new List<string>();
             string tmp_sql = " SELECT nkin_no FROM " + tblname;
             rtn = DBExec.Exec_DataReader_Col_List(tmp_sql, ref sqlcnnv10, ref list_existdata);
+
+            // 20261124 入金項目名称等がm_nkinの列の長さを超える場合に、切り詰めて登録するため、列の長さ(バイト数)を取得する -add sta
+            int maxlen_name = Get_ColLength(sqlcnnv10, tblname, "nkin_name", 50);
+            // 20261124 入金項目名称等がm_nkinの列の長さを超える場合に、切り詰めて登録するため、列の長さ(バイト数)を取得する -add end
             if (rtn == false)
             {
                 return rtn;
@@ -721,6 +783,9 @@ namespace Converter10.Njc.Repository
                 // 挿入処理
                 if (!string.IsNullOrEmpty(model_cvitem.Vari_Nkin_no) && list_existdata.Contains(model_cvitem.Vari_Nkin_no) == false)
                 {
+                    // 20261124 名称が列の長さを超える場合は、切り詰めて登録し、ログを出す(超えたままINSERTすると、入金項目が登録されないため) -add sta
+                    hash_cvitem["nkin_name"] = Cut_NkinText(sqlcnnv10, model_cvitem.Vari_Nkin_no, "入金項目名称", model_cvitem.Vari_Nkin_name, maxlen_name);
+                    // 20261124 名称が列の長さを超える場合は、切り詰めて登録し、ログを出す -add end
                     CVDBInsert.Cnv_Db(sqlcnnv10, tblname, fldnamegrp, hash_cvitem, ref normalflg);
                 }
 
