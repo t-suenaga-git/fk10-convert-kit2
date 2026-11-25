@@ -1516,13 +1516,36 @@ namespace Converter10.Njc.Repository
                     // 20161128 物件面積関連情報の追加 -add sta
                     if (CommonModule.CNVNO == (int)CommonModule.ConvertTypes._汎用)
                     {
-                        model_cvitem.Vari_Men_nobeyukatubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_nobeyuka)), Typ.RoundingTypes.Kirisute, 2).ToString();
-                        model_cvitem.Vari_Men_sikititubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_sikiti)), Typ.RoundingTypes.Kirisute, 2).ToString();
-                        model_cvitem.Vari_Men_parkingtubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_parking)), Typ.RoundingTypes.Kirisute, 2).ToString();
-                        model_cvitem.Vari_Men_yukatokitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_yukatoki)), Typ.RoundingTypes.Kirisute, 2).ToString();
-                        model_cvitem.Vari_Men_sikititokitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_sikititoki)), Typ.RoundingTypes.Kirisute, 2).ToString();
-                        model_cvitem.Vari_Men_kentikutubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_kentiku)), Typ.RoundingTypes.Kirisute, 2).ToString();
-                        model_cvitem.Vari_Men_kentikutokitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_kentikutoki)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        // 20261125 平米が空(未入力)のときは、坪も空のままにする(賃貸革命も、未入力の面積は平米・坪ともNULLで保存する) -chg sta
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_nobeyuka))
+                        {
+                            model_cvitem.Vari_Men_nobeyukatubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_nobeyuka)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_sikiti))
+                        {
+                            model_cvitem.Vari_Men_sikititubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_sikiti)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_parking))
+                        {
+                            model_cvitem.Vari_Men_parkingtubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_parking)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_yukatoki))
+                        {
+                            model_cvitem.Vari_Men_yukatokitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_yukatoki)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_sikititoki))
+                        {
+                            model_cvitem.Vari_Men_sikititokitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_sikititoki)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_kentiku))
+                        {
+                            model_cvitem.Vari_Men_kentikutubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_kentiku)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_kentikutoki))
+                        {
+                            model_cvitem.Vari_Men_kentikutokitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_kentikutoki)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
+                        // 20261125 平米が空(未入力)のときは、坪も空のままにする -chg end
                     }
                     // 20161128 物件面積関連情報の追加 -add end
 

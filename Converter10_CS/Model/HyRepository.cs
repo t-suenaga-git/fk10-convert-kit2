@@ -253,7 +253,12 @@ namespace Converter10.Njc.Repository
                             case "店舗付き住宅店舗部分面積(m2)":
                                 {
                                     model_cvitem.Vari_Men_tempo = fldvalue.Trim();
-                                    model_cvitem.Vari_Men_tempotubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(fldvalue.Trim())), Typ.RoundingTypes.Kirisute, 2).ToString();
+                                    // 20261125 平米が空(未入力)のときは、坪も空のままにする -chg sta
+                                    if (!string.IsNullOrEmpty(fldvalue.Trim()))
+                                    {
+                                        model_cvitem.Vari_Men_tempotubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(fldvalue.Trim())), Typ.RoundingTypes.Kirisute, 2).ToString();
+                                    }
+                                    // 20261125 平米が空(未入力)のときは、坪も空のままにする -chg end
                                     break;
                                 }
                             case "店舗付き住宅店舗部分面積(坪)":
@@ -264,7 +269,12 @@ namespace Converter10.Njc.Repository
                             case "店舗付き住宅住宅部分面積(m2)":
                                 {
                                     model_cvitem.Vari_Men_jutaku = fldvalue.Trim();
-                                    model_cvitem.Vari_Men_jutakutubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(fldvalue.Trim())), Typ.RoundingTypes.Kirisute, 2).ToString();
+                                    // 20261125 平米が空(未入力)のときは、坪も空のままにする -chg sta
+                                    if (!string.IsNullOrEmpty(fldvalue.Trim()))
+                                    {
+                                        model_cvitem.Vari_Men_jutakutubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(fldvalue.Trim())), Typ.RoundingTypes.Kirisute, 2).ToString();
+                                    }
+                                    // 20261125 平米が空(未入力)のときは、坪も空のままにする -chg end
                                     break;
                                 }
                             case "店舗付き住宅住宅部分面積(坪)":
@@ -304,12 +314,30 @@ namespace Converter10.Njc.Repository
                     // 汎用の場合は平米から坪を算出する
                     if (CommonModule.CNVNO == (int)CommonModule.ConvertTypes._汎用)
                     {
-                        model_cvitem.Vari_Men_senyujitutubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_senyujitu)), Typ.RoundingTypes.Kirisute, 2).ToString();
-                        model_cvitem.Vari_Men_yukatubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_yuka)), Typ.RoundingTypes.Kirisute, 2).ToString();
-                        model_cvitem.Vari_Men_balconytubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_balcony)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        // 20261125 平米が空(未入力)のときは、坪も空のままにする(賃貸革命も、未入力の面積は平米・坪ともNULLで保存する) -chg sta
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_senyujitu))
+                        {
+                            model_cvitem.Vari_Men_senyujitutubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_senyujitu)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_yuka))
+                        {
+                            model_cvitem.Vari_Men_yukatubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_yuka)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_balcony))
+                        {
+                            model_cvitem.Vari_Men_balconytubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_balcony)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
+                        // 20261125 平米が空(未入力)のときは、坪も空のままにする -chg end
                         // 20261125 専有登記面積・登記延床面積も、平米から坪を算出する(これまでは坪が空になっていた) -add sta
-                        model_cvitem.Vari_Men_senyutoukitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_senyutouki)), Typ.RoundingTypes.Kirisute, 2).ToString();
-                        model_cvitem.Vari_Men_tokitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_toki)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        // 平米が空(未入力)のときは、坪も空のままにする(賃貸革命も、未入力の面積は平米・坪ともNULLで保存する)
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_senyutouki))
+                        {
+                            model_cvitem.Vari_Men_senyutoukitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_senyutouki)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
+                        if (!string.IsNullOrEmpty(model_cvitem.Vari_Men_toki))
+                        {
+                            model_cvitem.Vari_Men_tokitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_toki)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        }
                         // 20261125 専有登記面積・登記延床面積も、平米から坪を算出する -add end
                     }
                     // 20161004 汎用コンバート時の平米→坪変換処理の追加 -add end
