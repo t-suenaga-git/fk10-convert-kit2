@@ -307,6 +307,10 @@ namespace Converter10.Njc.Repository
                         model_cvitem.Vari_Men_senyujitutubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_senyujitu)), Typ.RoundingTypes.Kirisute, 2).ToString();
                         model_cvitem.Vari_Men_yukatubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_yuka)), Typ.RoundingTypes.Kirisute, 2).ToString();
                         model_cvitem.Vari_Men_balconytubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_balcony)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        // 20261125 専有登記面積・登記延床面積も、平米から坪を算出する(これまでは坪が空になっていた) -add sta
+                        model_cvitem.Vari_Men_senyutoukitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_senyutouki)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        model_cvitem.Vari_Men_tokitubo = Typ.ToDecimal(Typ.ToTubo(Typ.ToDouble(model_cvitem.Vari_Men_toki)), Typ.RoundingTypes.Kirisute, 2).ToString();
+                        // 20261125 専有登記面積・登記延床面積も、平米から坪を算出する -add end
                     }
                     // 20161004 汎用コンバート時の平米→坪変換処理の追加 -add end
                     // 間取変換
