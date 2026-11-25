@@ -2410,7 +2410,7 @@ namespace Converter10
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('契約情報','契約履歴情報','契約開始日','中間ファイル','契約情報','契約開始日','','●','datetime','1900/01/01','2100/12/31','','','●','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('契約情報','契約履歴情報','契約終了日','中間ファイル','契約情報','契約終了日','','●','datetime','1900/01/01','2100/12/31','','','●','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('契約情報','契約履歴情報','条件変更日','','','','','','datetime','1900/01/01','2100/12/31','','','','','×');");
-            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('契約情報','契約履歴情報','契約更新通知日','中間ファイル','契約情報','契約更新通知日','','●','datetime','1900/01/01','2100/12/31','','','','','×');");
+            rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('契約情報','契約履歴情報','契約更新通知日','中間ファイル','契約情報','契約更新通知日','','●','datetime','1900/01/01','2100/12/31','','','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('契約情報','契約履歴情報','通知書印刷日','中間ファイル','契約情報','通知書印刷日','','●','datetime','1900/01/01','2100/12/31','','','','','×');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('契約情報','契約履歴情報','管理業者No','中間ファイル','契約情報','管理業者No','','●','int','1','999999','','','','','●');");
             rtn_qry.Append(" INSERT INTO " + MIDFILEINFO_DBNAME + " VALUES('契約情報','契約履歴情報','賃貸保証業者No','中間ファイル','契約情報','賃貸保証業者No','','●','int','1','999999','','','','','●');");

@@ -2393,7 +2393,7 @@ namespace Converter10.Njc.Frm
               new (){ 汎用中間ファイル = new TableAndColumn("契約情報", "契約開始日"), Preテーブル  = new TableAndColumn(nameof(pre_契約情報), nameof(pre_契約情報.kystart_ymd)), 既存中間ファイル = new TableAndColumn("契約履歴情報", "契約開始日") },
               new (){ 汎用中間ファイル = new TableAndColumn("契約情報", "契約終了日"), Preテーブル  = new TableAndColumn(nameof(pre_契約情報), nameof(pre_契約情報.kyend_ymd)), 既存中間ファイル = new TableAndColumn("契約履歴情報", "契約終了日") },
               new (){ 汎用中間ファイル = new TableAndColumn(null, null), Preテーブル  = new TableAndColumn(null, null), 既存中間ファイル = new TableAndColumn("契約履歴情報", "条件変更日") },
-              new (){ 汎用中間ファイル = new TableAndColumn("契約情報", "契約更新通知日"), Preテーブル  = new TableAndColumn(nameof(pre_契約情報), null), 既存中間ファイル = new TableAndColumn("契約履歴情報", "契約更新通知日") },
+              new (){ 汎用中間ファイル = new TableAndColumn("契約情報", "契約更新通知日"), Preテーブル  = new TableAndColumn(nameof(pre_契約情報), nameof(pre_契約情報.tuti_ymd)), 既存中間ファイル = new TableAndColumn("契約履歴情報", "契約更新通知日") },
               new (){ 汎用中間ファイル = new TableAndColumn("契約情報", "通知書印刷日"), Preテーブル  = new TableAndColumn(nameof(pre_契約情報), null), 既存中間ファイル = new TableAndColumn("契約履歴情報", "通知書印刷日") },
               new (){ 汎用中間ファイル = new TableAndColumn("契約情報", "管理業者No"), Preテーブル  = new TableAndColumn(nameof(pre_契約情報), nameof(pre_契約情報.kanri_gy_fudono)), 既存中間ファイル = new TableAndColumn("契約履歴情報", "管理業者No") },
               new (){ 汎用中間ファイル = new TableAndColumn("契約情報", "賃貸保証業者No"), Preテーブル  = new TableAndColumn(nameof(pre_契約情報), nameof(pre_契約情報.gy_hosyono)), 既存中間ファイル = new TableAndColumn("契約履歴情報", "賃貸保証業者No") },

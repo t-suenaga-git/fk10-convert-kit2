@@ -56,6 +56,8 @@ namespace Converter10.Njc.Frm
             // 1.2.0.0 部屋毎定額の日割り(比率計算)の設定
             new AddedColumn("pre_物件管理情報", "hyteigaku_hiwariflg", "varchar(max)", "1.2.0.0"),
             new AddedColumn("pre_物件管理情報", "hyteigaku_hiwarikbn", "varchar(max)", "1.2.0.0"),
+            // 1.3.0.0 契約更新通知日
+            new AddedColumn("pre_契約情報", "tuti_ymd", "varchar(max)", "1.3.0.0"),
         };
 
         /// <summary>

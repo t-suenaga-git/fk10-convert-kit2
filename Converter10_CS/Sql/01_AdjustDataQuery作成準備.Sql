@@ -1,13 +1,14 @@
 -- pre_ テーブル作成クエリ(汎用コンバートキット2 に同梱)
--- 対応ツール: 汎用コンバートキット2 ver 1.2.0.0
+-- 対応ツール: 汎用コンバートキット2 ver 1.3.0.0
 -- 更新履歴:
+--   ver 1.3.0.0: pre_契約情報 に、tuti_ymd(契約更新通知日)を追加
 --   ver 1.2.0.0: pre_物件管理情報 に、hyteigaku_hiwariflg(部屋毎定額 - 管理手数料を比率計算する 0/1)、
 --           hyteigaku_hiwarikbn(部屋毎定額 - 比率計算の基準 1:金額 2:日数 -1:未定義)を追加
 --   ver 1.1.0.0: pre_家主情報、pre_仲介業者情報、pre_修繕業者情報、pre_ライフライン業者情報、pre_施設保守業者情報 に、
 --           invoice_bango(インボイス登録番号)、tax_gykbn(課税区分 1:未確認 2:課税事業者 3:免税事業者)を追加
 -- 注意: 実行すると、pre_ テーブルを削除して作り直すため、中のデータは消えます。
 --       新しい列は NOT NULL DEFAULT '' です(新しい列を指定しない既存のINSERTも、そのまま動きます)。
-PRINT N'pre_ テーブル作成: 汎用コンバートキット2 ver 1.2.0.0 対応';
+PRINT N'pre_ テーブル作成: 汎用コンバートキット2 ver 1.3.0.0 対応';
 
 IF OBJECT_ID(N'[dbo].[pre_物件鍵タイトルマスタ]', N'U') IS NOT NULL
 Begin
@@ -1278,7 +1279,8 @@ CREATE TABLE [dbo].[pre_契約情報](
 	[yokugetu_uketoriumu] [varchar](max) NOT NULL,
 	[yokugetu_uketorimonth] [varchar](max) NOT NULL,
 	[ky_logonuser_no] [varchar](max) NOT NULL,
-	[sq_logonuser_no] [varchar](max) NOT NULL
+	[sq_logonuser_no] [varchar](max) NOT NULL,
+	[tuti_ymd] [varchar](max) NOT NULL CONSTRAINT [DF_pre_契約情報_tuti_ymd] DEFAULT ''
 );
 
 IF OBJECT_ID(N'[dbo].[pre_契約契約者保証人情報]', N'U') IS NOT NULL

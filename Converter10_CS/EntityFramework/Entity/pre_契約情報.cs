@@ -88,5 +88,9 @@ namespace Converter10.EntityFramework.Entity
         public string ky_logonuser_no { get; set; }
 
         public string sq_logonuser_no { get; set; }
+
+        // 20261124 契約更新通知日(tuti_ymd)の追加 -add sta
+        public string tuti_ymd { get; set; }
+        // 20261124 契約更新通知日(tuti_ymd)の追加 -add end
     }
 }
